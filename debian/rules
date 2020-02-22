@@ -120,7 +120,7 @@ b/configure-stamp: configure
 		b/qemu/config-host.mak
 
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
-	# minimal system (for qboot/microvm - https://github.com/bonzini/qboot)
+	# microvm system
 	rm -rf b/qemu-microvm; mkdir -p b/qemu-microvm
 	cd b/qemu-microvm && \
 		../../configure ${common_configure_opts} --disable-user \
@@ -176,7 +176,7 @@ ifeq (${enable_system},enable)
 endif
 
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
-	# minimal system (for qboot/microvm - https://github.com/bonzini/qboot)
+	# microvm system
 	$(MAKE) -C b/qemu-microvm V=${V}
 endif
 
@@ -193,8 +193,8 @@ endif
 define inst-system
 	mkdir -p debian/qemu-system-$1/usr/share/man/man1 debian/qemu-system-$1/usr/bin
 	for t in ${sysarch_$1}; do \
-	    mv debian/tmp$2/usr/bin/qemu-system-$$t debian/qemu-system-$1/usr/bin/qemu-system-$$t$2; \
-	    echo ".so man1/qemu-system.1" > debian/qemu-system-$1/usr/share/man/man1/qemu-system-$$t$2.1; \
+	    mv debian/tmp/usr/bin/qemu-system-$$t debian/qemu-system-$1/usr/bin/qemu-system-$$t; \
+	    echo ".so man1/qemu-system.1" > debian/qemu-system-$1/usr/share/man/man1/qemu-system-$$t.1; \
 	done
 	echo sysarch:$1=\
 $(if $(wordlist 10,20,${sysarch_$1}),\
@@ -221,14 +221,12 @@ ifeq (${enable_system},enable)
 
 	# qemu-system subpackages
 	mv debian/tmp/usr/share/man/man1/qemu.1 debian/tmp/usr/share/man/man1/qemu-system.1
-	$(foreach s,${systems},$(call inst-system,$s,""))
+	$(foreach s,${systems},$(call inst-system,$s))
 
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
-	# minimal system (for qboot/microvm - https://github.com/bonzini/qboot)
-	mkdir -p $(CURDIR)/debian/tmp-microvm
-	$(MAKE) -C b/qemu-microvm DESTDIR=$(CURDIR)/debian/tmp-microvm install \
-	  KEYMAPS= ICON_SIZES=
-	$(call inst-system,x86-microvm,"-microvm")
+	# microvm system
+	cp b/qemu-microvm/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86/usr/bin/qemu-system-x86_64-microvm
+	echo ".so man1/qemu-system.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-microvm.1
 endif
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
