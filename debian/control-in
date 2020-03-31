@@ -26,9 +26,8 @@ Build-Depends: debhelper (>= 12),
 # --audio-drv-list=pa,oss	kfreebsd-*
  libpulse-dev,
  libasound2-dev [linux-any],
-# for virtfs
+# for virtfs (now in libc6)
 # --enable-attr
- libattr1-dev,
 # bluetooth subsystem got deprecated by upstream
 # --disable-bluez
 # --enable-brlapi
