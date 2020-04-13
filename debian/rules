@@ -328,6 +328,9 @@ debian/control: debian/control-in debian/rules
 endif
 
 
+OPENBIOS_EXTRACFLAGS = -ffreestanding -fno-pic -fno-stack-protector
+# -Wno-error=address-of-packed-member
+
 build-indep:
 
 	mkdir -p b/fw
@@ -363,6 +366,16 @@ build-indep:
 # powernv firmware in roms/skiboot
 	cp -al roms/skiboot b/
 	${MAKE} -C ${CURDIR}/b/skiboot CROSS=${PPC64_CROSSPFX} V=1
+
+# openbios (ppc && sparc compilers)
+	cp -al roms/openbios b/
+	cd b/openbios && config/scripts/switch-arch builtin-ppc builtin-sparc32 builtin-sparc64
+	${MAKE} -C b/openbios/obj-ppc     EXTRACFLAGS="${OPENBIOS_EXTRACFLAGS}" V=1
+	mv -f b/openbios/obj-ppc/openbios-qemu.elf b/fw/openbios-ppc
+	${MAKE} -C b/openbios/obj-sparc32 EXTRACFLAGS="${OPENBIOS_EXTRACFLAGS}" V=1
+	mv -f b/openbios/obj-sparc32/openbios-builtin.elf b/fw/openbios-sparc32
+	${MAKE} -C b/openbios/obj-sparc64 EXTRACFLAGS="${OPENBIOS_EXTRACFLAGS}" V=1
+	mv -f b/openbios/obj-sparc64/openbios-builtin.elf b/fw/openbios-sparc64
 
 binary-indep:
 	dh_testdir
