@@ -377,6 +377,11 @@ build-indep:
 	${MAKE} -C b/openbios/obj-sparc64 EXTRACFLAGS="${OPENBIOS_EXTRACFLAGS}" V=1
 	mv -f b/openbios/obj-sparc64/openbios-builtin.elf b/fw/openbios-sparc64
 
+# SLOF
+	cp -al roms/SLOF b/
+	env -u LDFLAGS -u CFLAGS $(MAKE) -C b/SLOF qemu CROSS="powerpc64-linux-gnu-" V=2
+	mv -f b/SLOF/boot_rom.bin b/fw/slof.bin
+
 binary-indep:
 	dh_testdir
 	dh_testroot
