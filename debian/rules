@@ -329,7 +329,6 @@ endif
 
 
 OPENBIOS_EXTRACFLAGS = -ffreestanding -fno-pic -fno-stack-protector
-# -Wno-error=address-of-packed-member
 
 build-indep:
 
