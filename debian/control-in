@@ -61,7 +61,7 @@ Build-Depends: debhelper (>= 12),
  libcacard-dev,
  libpixman-1-dev,
 # --enable-rbd		linux-*
- librados-dev [linux-any], librbd-dev [linux-any],
+ librbd-dev [linux-any],
 # glusterfs is debian-only since ubuntu/glusterfs is in universe (MIR LP: #1274247)
 # before buster it was glusterfs-common so keep it for now for bpo
 :debian:# --enable-glusterfs
