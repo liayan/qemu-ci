@@ -36,6 +36,7 @@ enable_system = $(if $(filter qemu-system,${BUILD_PACKAGES}),enable,disable)
 enable_linux_user = $(if $(filter qemu-user,${BUILD_PACKAGES}),enable,disable)
 
 FIRMWAREPATH = /usr/share/qemu:/usr/share/seabios:/usr/lib/ipxe/qemu
+sysdatadir = debian/qemu-system-data/usr/share/qemu
 
 ALPHAEV67_CROSSPFX = alpha-linux-gnu-
 PPC64_CROSSPFX = powerpc64-linux-gnu-
@@ -340,10 +341,25 @@ debian/control: debian/control-in debian/rules
 	chmod -w $@
 endif
 
+### openbios rules
+b/openbios/config-host.mak:
+	mkdir -p b/openbios
+	cd b/openbios && ../../roms/openbios/config/scripts/switch-arch builtin-ppc builtin-sparc32 builtin-sparc64
+build-openbios: $(addprefix b/openbios/obj-, $(addsuffix /.built, ppc sparc32 sparc64))
+b/openbios/obj-%/.built: b/openbios/config-host.mak
+	${MAKE} -C ${@D} V=${V} EXTRACFLAGS="-ffreestanding -fno-pic -fno-stack-protector"
+	@touch $@
+install-openbios: build-openbios b/install-indep-prep.stamp | ${sysdatadir}
+	install -m 0644 b/openbios/obj-ppc/openbios-qemu.elf "${sysdatadir}/openbios-ppc"
+	install -m 0644 b/openbios/obj-sparc32/openbios-builtin.elf "${sysdatadir}/openbios-sparc32"
+	install -m 0644 b/openbios/obj-sparc64/openbios-builtin.elf "${sysdatadir}/openbios-sparc64"
+	install -m 0644 -t "${sysdatadir}" \
+		b/openbios/obj-sparc32/QEMU,tcx.bin \
+		b/openbios/obj-sparc32/QEMU,cgthree.bin \
+		b/openbios/obj-sparc64/QEMU,VGA.bin
+.PHONY: build-openbios install-openbios
 
-OPENBIOS_EXTRACFLAGS = -ffreestanding -fno-pic -fno-stack-protector
-
-build-indep:
+build-indep: build-openbios
 
 	mkdir -p b/fw
 
@@ -379,16 +395,6 @@ build-indep:
 	cp -al roms/skiboot b/
 	${MAKE} -C ${CURDIR}/b/skiboot CROSS=${PPC64_CROSSPFX} V=1
 
-# openbios (ppc && sparc compilers)
-	cp -al roms/openbios b/
-	cd b/openbios && config/scripts/switch-arch builtin-ppc builtin-sparc32 builtin-sparc64
-	${MAKE} -C b/openbios/obj-ppc     EXTRACFLAGS="${OPENBIOS_EXTRACFLAGS}" V=1
-	mv -f b/openbios/obj-ppc/openbios-qemu.elf b/fw/openbios-ppc
-	${MAKE} -C b/openbios/obj-sparc32 EXTRACFLAGS="${OPENBIOS_EXTRACFLAGS}" V=1
-	mv -f b/openbios/obj-sparc32/openbios-builtin.elf b/fw/openbios-sparc32
-	${MAKE} -C b/openbios/obj-sparc64 EXTRACFLAGS="${OPENBIOS_EXTRACFLAGS}" V=1
-	mv -f b/openbios/obj-sparc64/openbios-builtin.elf b/fw/openbios-sparc64
-
 # SLOF
 	cp -al roms/SLOF b/
 	env -u LDFLAGS -u CFLAGS $(MAKE) -C b/SLOF qemu CROSS="powerpc64-linux-gnu-" V=2
@@ -400,7 +406,10 @@ b/install-indep-prep.stamp:
 	dh_prep -i -Xdebian/tmp
 	touch $@
 
-binary-indep: b/install-indep-prep.stamp
+${sysdatadir}:
+	mkdir -p -m 0755 ${sysdatadir}
+
+binary-indep: b/install-indep-prep.stamp install-openbios | ${sysdatadir}
 
 	dh_install -i
 	rm -f debian/qemu-system-data/usr/share/qemu/keymaps/Makefile
