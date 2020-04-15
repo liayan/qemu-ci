@@ -75,7 +75,7 @@ DEB_HOST_ARCH=$(dpkg-architecture -qDEB_HOST_ARCH)
 # find which fmts needs to be filtered out, which is arch-dependent.
 # Drop support for emulating amd64 on i386, http://bugs.debian.org/604712
 case "$DEB_HOST_ARCH" in
-  amd64 | i386) omit="i386|x86_64" ;;
+  amd64 | i386 | x32) omit="i386|x86_64|x32" ;;
   arm | armel | armhf | arm64) omit="arm|aarch64" ;;
   ppc64 | powerpc) omit="ppc|ppc64|ppc64abi32" ;;
   ppc64el) omit="ppc64le" ;;
