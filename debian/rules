@@ -394,10 +394,13 @@ build-indep:
 	env -u LDFLAGS -u CFLAGS $(MAKE) -C b/SLOF qemu CROSS="powerpc64-linux-gnu-" V=2
 	mv -f b/SLOF/boot_rom.bin b/fw/slof.bin
 
-binary-indep:
+b/install-indep-prep.stamp:
 	dh_testdir
 	dh_testroot
 	dh_prep -i -Xdebian/tmp
+	touch $@
+
+binary-indep: b/install-indep-prep.stamp
 
 	dh_install -i
 	rm -f debian/qemu-system-data/usr/share/qemu/keymaps/Makefile
