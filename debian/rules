@@ -1,6 +1,10 @@
 #!/usr/bin/make -f
 SHELL = /bin/sh -e
 
+# in order to keep output non-intermixed together, disable parallel building
+# of different targets in this d/rules but allow running parallel submakes
+.NOTPARALLEL:
+
 # get DEB_VERSION
 include /usr/share/dpkg/pkg-info.mk
 # get DEB_HOST_ARCH DEB_HOST_ARCH_OS DEB_HOST_GNU_TYPE DEB_HOST_MULTIARCH DEB_BUILD_GNU_TYPE
