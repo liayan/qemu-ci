@@ -49,8 +49,8 @@ Build-Depends: debhelper (>= 12),
  libiscsi-dev (>> 1.9.0~),
 # --enable-curses
  libncursesw5-dev,
-# --enable-virglrenderer
- libvirglrenderer-dev,
+# --enable-virglrenderer	linux-*
+ libvirglrenderer-dev [linux-any],
 # --enable-opengl
  libepoxy-dev, libdrm-dev, libgbm-dev,
 :debian:# --enable-libnfs
