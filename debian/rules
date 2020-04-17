@@ -359,12 +359,17 @@ install-openbios: build-openbios b/install-indep-prep.stamp | ${sysdatadir}
 		b/openbios/obj-sparc64/QEMU,VGA.bin
 .PHONY: build-openbios install-openbios
 
-build-indep: build-openbios
+build-x86-optionrom:
+	mkdir -p b/optionrom
+	${MAKE) -f ${CURDIR}/debian/optionrom.mak -C b/optionrom SRC_PATH="${CURDIR}" all
+install-x86-optionrom: b/install-indep-prep.stamp | ${sysdatadir}
+	${MAKE} -f ${CURDIR}/debian/optionrom.mak -C b/optionrom SRC_PATH="${CURDIR}" install DESTDIR="${CURDIR}/${sysdatadir}"
+.PHONY: build-x86-optionrom install-x86-optionrom
+
+
+build-indep: build-x86-optionrom build-openbios
 
 	mkdir -p b/fw
-
-# x86 optionrom
-	${MAKE} -f ${CURDIR}/debian/optionrom.mak -C ${CURDIR}/b/fw SRC_PATH=${CURDIR}
 
 # qboot, aka bios-microvm
 	cp -al roms/qboot b/
@@ -409,8 +414,10 @@ b/install-indep-prep.stamp:
 ${sysdatadir}:
 	mkdir -p -m 0755 ${sysdatadir}
 
-binary-indep: b/install-indep-prep.stamp install-openbios | ${sysdatadir}
-
+binary-indep: b/install-indep-prep.stamp \
+		install-x86-optionrom \
+		install-openbios \
+		| ${sysdatadir}
 	dh_install -i
 	rm -f debian/qemu-system-data/usr/share/qemu/keymaps/Makefile
 	dh_installdocs -i
