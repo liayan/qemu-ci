@@ -1,3 +1,10 @@
+qemu (1:5.0~rc3-1) UNRELEASED; urgency=medium
+
+  * new upstream release (5.0)
+  * refresh patches, remove patches applied upstream
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Mon, 20 Apr 2020 18:44:17 +0300
+
 qemu (1:4.2-7) unstable; urgency=medium
 
   * qemu-system-gui: Multi-Arch=same, not foreign (Closes: #956763)
