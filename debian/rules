@@ -359,6 +359,17 @@ install-openbios: build-openbios
 		b/openbios/obj-sparc64/QEMU,VGA.bin
 sysdata-components += openbios
 
+### powernv firmware in roms/skiboot
+build-skiboot: b/skiboot/skiboot.lid
+b/skiboot/skiboot.lid:
+	mkdir -p b/skiboot
+	${MAKE} -C b/skiboot -f ${CURDIR}/roms/skiboot/Makefile \
+	  SRC=${CURDIR}/roms/skiboot \
+	  CROSS_COMPILE=${PPC64_CROSSPFX} V=${V}
+install-skiboot: b/skiboot/skiboot.lid
+	install -m 0644 -t "${sysdatadir}" $<
+sysdata-components += skiboot
+
 ### x86 optionrom
 build-x86-optionrom: b/optionrom/built
 b/optionrom/built:
@@ -397,10 +408,6 @@ build-indep: $(addprefix build-, ${sysdata-components})
 
 # s390x firmware in pc-bios/s390-ccw
 	${MAKE} -f debian/s390fw.mak OUT=b/fw/
-
-# powernv firmware in roms/skiboot
-	cp -al roms/skiboot b/
-	${MAKE} -C ${CURDIR}/b/skiboot CROSS=${PPC64_CROSSPFX} V=1
 
 # SLOF
 	cp -al roms/SLOF b/
