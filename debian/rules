@@ -406,14 +406,19 @@ install-qboot: b/qboot/bios.bin
 	install -m 0644 $< ${sysdatadir}/bios-microvm.bin
 sysdata-components += qboot
 
-build-indep: $(addprefix build-, ${sysdata-components})
-
-	mkdir -p b/fw
-
-# alpha firmware in roms/palcode-clipper
+### alpha firmware in roms/palcode-clipper
+build-palcode-clipper: b/qemu-palcode/palcode-clipper
+b/qemu-palcode/palcode-clipper:
 	cp -al roms/qemu-palcode b/
 	${MAKE} -C ${CURDIR}/b/qemu-palcode CROSS=${ALPHAEV67_CROSSPFX}
 	${ALPHAEV67_CROSSPFX}strip b/qemu-palcode/palcode-clipper
+install-palcode-clipper: b/qemu-palcode/palcode-clipper
+	install -m 0644 $< ${sysdatadir}/palcode-clipper
+sysdata-components += palcode-clipper
+
+build-indep: $(addprefix build-, ${sysdata-components})
+
+	mkdir -p b/fw
 
 # s390x firmware in pc-bios/s390-ccw
 	${MAKE} -f debian/s390fw.mak OUT=b/fw/
