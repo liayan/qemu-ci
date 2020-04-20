@@ -444,10 +444,13 @@ b/install-indep-prep.stamp:
 	touch $@
 
 ${sysdatadir}:
-	mkdir -p -m 0755 ${sysdatadir}
+	mkdir -p -m 0755 $@
+b:
+	mkdir -p $@
 
 .PHONY: $(addprefix build-  , ${sysdata-components})
 .PHONY: $(addprefix install-, ${sysdata-components})
+$(addprefix build-  , ${sysdata-components}): | b
 $(addprefix install-, ${sysdata-components}): b/install-indep-prep.stamp | ${sysdatadir}
 
 binary-indep: b/install-indep-prep.stamp \
