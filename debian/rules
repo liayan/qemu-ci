@@ -380,15 +380,18 @@ install-x86-optionrom: build-x86-optionrom b/install-indep-prep.stamp | ${sysdat
 	${MAKE} -f ${CURDIR}/debian/optionrom.mak -C b/optionrom SRC_PATH="${CURDIR}" install DESTDIR="${CURDIR}/${sysdatadir}"
 sysdata-components += x86-optionrom
 
+# qboot, aka bios-microvm
+build-qboot: b/qboot/bios.bin
+b/qboot/bios.bin:
+	cp -al roms/qboot b/
+	${MAKE} -C ${CURDIR}/b/qboot
+install-qboot: b/qboot/bios.bin
+	install -m 0644 $< ${sysdatadir}/bios-microvm.bin
+sysdata-components += qboot
+
 build-indep: $(addprefix build-, ${sysdata-components})
 
 	mkdir -p b/fw
-
-# qboot, aka bios-microvm
-	cp -al roms/qboot b/
-	${MAKE} -C ${CURDIR}/b/qboot
-	cp b/qboot/bios.bin b/fw/bios-microvm.bin
-	chmod 0644 b/fw/bios-microvm.bin
 
 # sgabios. The Makefile is too complex and forces current date to be embedded to binary
 	cc -c -o b/fw/sgabios.o roms/sgabios/sgabios.S -Wall -Os -m32 -nostdlib \
