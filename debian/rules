@@ -416,17 +416,26 @@ install-palcode-clipper: b/qemu-palcode/palcode-clipper
 	install -m 0644 $< ${sysdatadir}/palcode-clipper
 sysdata-components += palcode-clipper
 
-build-indep: $(addprefix build-, ${sysdata-components})
-
-	mkdir -p b/fw
-
-# s390x firmware in pc-bios/s390-ccw
-	${MAKE} -f debian/s390fw.mak OUT=b/fw/
-
-# SLOF
+### SLOF
+build-slof: b/SLOF/boot_rom.bin
+b/SLOF/boot_rom.bin:
 	cp -al roms/SLOF b/
-	env -u LDFLAGS -u CFLAGS $(MAKE) -C b/SLOF qemu CROSS="powerpc64-linux-gnu-" V=2
-	mv -f b/SLOF/boot_rom.bin b/fw/slof.bin
+	env -u LDFLAGS -u CFLAGS $(MAKE) -C b/SLOF qemu CROSS="powerpc64-linux-gnu-" V=${V}
+install-slof: b/SLOF/boot_rom.bin
+	install -m 0644 $< ${sysdatadir}/slof.bin
+sysdata-components += slof
+
+### s390x firmware in pc-bios/s390-ccw
+build-s390x-fw: b/s390fw/built
+b/s390fw/built:
+	mkdir -p b/s390fw
+	${MAKE} -f debian/s390fw.mak OUT=b/s390fw/
+	touch $@
+install-s390x-fw: build-s390x-fw
+	install -m 0644 -t "${sysdatadir}" b/s390fw/s390*.img
+sysdata-components += s390x-fw
+
+build-indep: $(addprefix build-, ${sysdata-components})
 
 b/install-indep-prep.stamp:
 	dh_testdir
