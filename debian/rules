@@ -435,6 +435,16 @@ install-s390x-fw: build-s390x-fw
 	install -m 0644 -t "${sysdatadir}" b/s390fw/s390*.img
 sysdata-components += s390x-fw
 
+### hppa-firmware (roms/seabios-hppa)
+build-hppa-fw: b/hppafw/hppa-firmware.img
+b/hppafw/hppa-firmware.img: | b
+	mkdir -p b/hppafw
+	${MAKE} -C roms/seabios-hppa OUT=../../b/hppafw/ PYTHON=python3 parisc
+	hppa-linux-gnu-strip -R.note -R.comment $@
+install-hppa-fw: b/hppafw/hppa-firmware.img
+	install -m 0644 $< ${sysdatadir}
+sysdata-components += hppa-fw
+
 build-indep: $(addprefix build-, ${sysdata-components})
 
 b/install-indep-prep.stamp:
