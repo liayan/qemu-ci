@@ -147,7 +147,7 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 		--disable-libiscsi --disable-rbd  --disable-spice --disable-attr \
 		--disable-cap-ng --disable-linux-aio --disable-brlapi \
 		--disable-virglrenderer --disable-vnc-jpeg --disable-vnc-sasl \
-		--disable-vnc-png --disable-rdma --disable-pvrdma --disable-bluez \
+		--disable-vnc-png --disable-rdma --disable-pvrdma \
 		--disable-fdt --disable-curl --disable-curses --disable-sdl \
 		--disable-gtk  --disable-tpm --disable-vte --disable-vnc  \
 		--disable-xen --disable-opengl --target-list=x86_64-softmmu \

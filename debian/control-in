@@ -28,8 +28,6 @@ Build-Depends: debhelper (>= 12),
  libasound2-dev [linux-any],
 # for virtfs (now in libc6)
 # --enable-attr
-# bluetooth subsystem got deprecated by upstream
-# --disable-bluez
 # --enable-brlapi
  libbrlapi-dev,
 # --enable-virtfs	linux-*
