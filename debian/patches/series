@@ -3,4 +3,3 @@ microvm-default-machine-type.patch
 qboot-stop-using-inttypes.patch
 qboot-no-jump-tables.diff
 openbios-address-of-packet-member.patch
-iscsi-fix-heap-buffer-overflow-in-iscsi_aio_ioctl_cb.patch
