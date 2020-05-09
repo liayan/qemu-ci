@@ -3,3 +3,5 @@ microvm-default-machine-type.patch
 qboot-stop-using-inttypes.patch
 qboot-no-jump-tables.diff
 openbios-address-of-packet-member.patch
+virtiofsd-add-rlimit-nofile-NUM-option.patch
+virtiofsd-stay-below-fs.file-max-CVE-2020-10717.patch
