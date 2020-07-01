@@ -36,6 +36,8 @@ enable_system = $(if $(filter qemu-system,${BUILD_PACKAGES}),enable,disable)
 enable_linux_user = $(if $(filter qemu-user,${BUILD_PACKAGES}),enable,disable)
 
 FIRMWAREPATH = /usr/share/qemu:/usr/share/seabios:/usr/lib/ipxe/qemu
+PKGVERSION = Debian ${DEB_VERSION}
+SAVEMODDIR = /run/qemu/$(shell echo -n "${PKGVERSION}" | tr --complement '[:alnum:]+-.~' '_')
 sysdatadir = debian/qemu-system-data/usr/share/qemu
 
 ALPHAEV67_CROSSPFX = alpha-linux-gnu-
@@ -43,7 +45,7 @@ PPC64_CROSSPFX = powerpc64-linux-gnu-
 
 # we add another set of configure options from debian/control
 common_configure_opts = \
-	--with-pkgversion="Debian $(DEB_VERSION)" \
+	--with-pkgversion="$(PKGVERSION)" \
 	--extra-cflags="$(CFLAGS) $(CPPFLAGS)" --extra-ldflags="$(LDFLAGS) -Wl,--as-needed" \
 	--prefix=/usr \
 	--sysconfdir=/etc \
@@ -130,6 +132,7 @@ b/configure-stamp: configure
 		--${enable_system}-system \
 		--${enable_linux_user}-linux-user \
 		--enable-modules \
+		--enable-module-upgrades \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
 		$(QEMU_CONFIGURE_OPTIONS) || \
@@ -238,6 +241,13 @@ binary-arch:
 	# system and utils install
 	$(MAKE) -C b/qemu DESTDIR=$(CURDIR)/debian/tmp install \
 	  KEYMAPS= ICON_SIZES=
+
+# save block-extra loadable modules on upgrades
+# other module types for now (5.0) can't be loaded at runtime, only at startup
+	echo 'case $$1 in (upgrade|deconfigure) mkdir -p ${SAVEMODDIR}; cp -p ${libdir}/qemu/block-*.so ${SAVEMODDIR}/;; esac' \
+	  >> debian/qemu-block-extra.prerm.debhelper
+	echo 'case $$1 in (purge|remove) rm -f ${SAVEMODDIR}/block-*.so;; esac' \
+	  >> debian/qemu-block-extra.postrm.debhelper
 
 ifeq (${enable_system},enable)
 
