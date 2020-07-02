@@ -9,6 +9,12 @@ aio-posix-dont-duplicate-fd-handler-deletion-in-fdmon_io_uring_destroy.patch
 aio-posix-disable-fdmon-io_uring-when-GSource-is-used.patch
 hostmem-dont-use-mbind-if-host-nodes-is-empty.patch
 net-use-peer-when-purging-queue-in-qemu_flush_or_purge_queue_packets.patch
+qemu-nbd-close-inherited-stderr.patch
+9p-lock-directory-streams-with-a-CoMutex.patch
+virtio-balloon-fix-free-page-hinting-check-on-unreal.patch
+virtio-balloon-fix-free-page-hinting-without-an-iothread.patch
+virtio-balloon-unref-the-iothread-when-unrealizing.patch
+net-do-not-include-a-newline-in-the-id-of-nic-device.patch
 fix-tulip-breakage.patch
 fix-qga-assert-regression.patch
 ati-vga-check-mm_index-before-recursive-call-CVE-2020-13800.patch
