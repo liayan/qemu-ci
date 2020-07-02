@@ -10,3 +10,4 @@ aio-posix-disable-fdmon-io_uring-when-GSource-is-used.patch
 hostmem-dont-use-mbind-if-host-nodes-is-empty.patch
 net-use-peer-when-purging-queue-in-qemu_flush_or_purge_queue_packets.patch
 fix-qga-assert-regression.patch
+ati-vga-check-mm_index-before-recursive-call-CVE-2020-13800.patch
