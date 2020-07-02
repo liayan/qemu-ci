@@ -18,3 +18,5 @@ megasas-use-unsigned-type-for-positive-numeric-fields.patch
 megasas-fix-possible-out-of-bounds-array-access.patch
 nbd-server-avoid-long-error-message-assertions-CVE-2020-10761.patch
 es1370-check-total-frame-count-against-current-frame-CVE-2020-13361.patch
+sdcard-update-coding-style-to-make-checkpatch-happy.patch
+sdcard-dont-switch-to-ReceivingData-if-address-is-invalid-CVE-2020-13253.patch
