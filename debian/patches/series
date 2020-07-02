@@ -16,3 +16,4 @@ exec-set-map-length-to-zero-when-returning-NULL-CVE-2020-13659.patch
 megasas-use-unsigned-type-for-reply_queue_head-and-check-index-CVE-2020-13362.patch
 megasas-use-unsigned-type-for-positive-numeric-fields.patch
 megasas-fix-possible-out-of-bounds-array-access.patch
+nbd-server-avoid-long-error-message-assertions-CVE-2020-10761.patch
