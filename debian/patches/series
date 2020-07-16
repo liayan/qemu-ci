@@ -4,6 +4,7 @@ qboot-stop-using-inttypes.patch
 qboot-no-jump-tables.diff
 openbios-address-of-packet-member.patch
 openbios-use-source_date_epoch-in-makefile.patch
+seabios-hppa-use-consistant-date-and-remove-hostname.patch
 virtiofsd-add-rlimit-nofile-NUM-option.patch
 virtiofsd-stay-below-fs.file-max-CVE-2020-10717.patch
 aio-posix-dont-duplicate-fd-handler-deletion-in-fdmon_io_uring_destroy.patch
