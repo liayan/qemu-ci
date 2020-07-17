@@ -275,7 +275,7 @@ ifeq (${VENDOR},UBUNTU)
 	sed 's/@KVM@//' debian/kvm-spice > debian/qemu-system-x86/usr/bin/qemu-system-x86_64-spice
 	touch -r debian/kvm-spice debian/qemu-system-x86/usr/bin/kvm-spice debian/qemu-system-x86/usr/bin/qemu-system-x86_64-spice
 	chmod 0755                debian/qemu-system-x86/usr/bin/kvm-spice debian/qemu-system-x86/usr/bin/qemu-system-x86_64-spice
-	dh_install -p qemu-system-x86 debian/kvm-spice.1 usr/share/man/man1/
+	install -p -t debian/qemu-system-x86/usr/share/man/man1/ debian/kvm-spice.1
 	echo ".so man1/kvm-spice.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-spice.1
 endif
 endif
@@ -293,8 +293,8 @@ ifneq ($(filter ${DEB_HOST_ARCH},s390x),)
 endif
 ifeq ($(VENDOR),UBUNTU)
 # apport hook is ubuntu-specific
-	dh_install -pqemu-system-common debian/source_qemu.py \
-		usr/share/apport/package-hooks/
+	install -p -D -t debian/qemu-system-common/usr/share/apport/package-hooks/ \
+		 debian/source_qemu.py
 endif
 
 # virtfs-proxy-helper and qemu-bridge-helper are linux-specific
@@ -302,7 +302,8 @@ endif
 	         usr/share/man/man1/virtfs-proxy-helper.1 \
 		 usr/lib/qemu/qemu-bridge-helper \
 	; do \
-	  dh_install -p qemu-system-common $$f ; \
+	  mkdir -p debian/qemu-system-common/$${f%/*} ; \
+	  mv debian/tmp/$$f debian/qemu-system-common/$$f ; \
 	done
 
 ifneq (${DEB_HOST_ARCH},sparc64)
@@ -312,14 +313,16 @@ ifneq (${DEB_HOST_ARCH},sparc64)
 		 usr/share/man/man1/virtiofsd.1 \
 		 usr/share/qemu/vhost-user/50-qemu-virtiofsd.json \
 	; do \
-	  dh_install -p qemu-system-common $$f ; \
+	  mkdir -p debian/qemu-system-common/$${f%/*} ; \
+	  mv debian/tmp/$$f debian/qemu-system-common/$$f ; \
 	done
 endif
 
 # ui-spice-app is optional (see d/control for spice)
 	if [ -f debian/tmp${libdir}/qemu/ui-spice-app.so ]; then \
-	  dh_install -p qemu-system-common \
-	    ${libdir}/qemu/ui-spice-app.so; \
+	  mkdir -p debian/qemu-system-common${libdir}/qemu ; \
+	  mv debian/tmp${libdir}/qemu/ui-spice-app.so \
+	     debian/qemu-system-common${libdir}/qemu/ ; \
 	fi
 
 endif # linux
@@ -327,7 +330,8 @@ endif # linux
 endif # enable_system
 
 ifeq ($(enable_linux_user),enable)
-	dh_movefiles -p qemu-user $(patsubst %,usr/bin/qemu-%,${user_targets})
+	mkdir -p debian/qemu-user/usr/bin
+	mv -t debian/qemu-user/usr/bin $(patsubst %,debian/tmp/usr/bin/qemu-%,${user_targets})
 	dh_link -p qemu-user $(patsubst %,usr/share/man/man1/qemu-user.1 usr/share/man/man1/qemu-%.1,${user_targets})
 
 	# qemu-user-static
