@@ -307,8 +307,7 @@ endif
 	         usr/share/man/man1/virtfs-proxy-helper.1 \
 		 usr/lib/qemu/qemu-bridge-helper \
 	; do \
-	  mkdir -p debian/qemu-system-common/$${f%/*} ; \
-	  mv debian/tmp/$$f debian/qemu-system-common/$$f ; \
+	  dh_install -p qemu-system-common --sourcedir=debian/tmp $$f ; \
 	done
 
 ifneq (${DEB_HOST_ARCH},sparc64)
@@ -324,9 +323,8 @@ endif
 
 # ui-spice-app is optional (see d/control for spice)
 	if [ -f debian/tmp${libdir}/qemu/ui-spice-app.so ]; then \
-	  mkdir -p debian/qemu-system-common${libdir}/qemu ; \
-	  mv debian/tmp${libdir}/qemu/ui-spice-app.so \
-	     debian/qemu-system-common${libdir}/qemu/ ; \
+	  dh_install -p qemu-system-common --sourcedir=debian/tmp \
+	    ${libdir}/qemu/ui-spice-app.so; \
 	fi
 
 endif # linux
