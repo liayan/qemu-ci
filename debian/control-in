@@ -97,7 +97,7 @@ Build-Depends: debhelper (>= 12),
  zlib1g-dev,
 # other optional features we enable
 # no configure flag, needed for qga
- libudev-dev,
+ libudev-dev [linux-any],
 # --enable-vnc
 # --enable-vnc-jpeg
  libjpeg-dev,
@@ -111,7 +111,6 @@ Build-Depends: debhelper (>= 12),
 ##--enable-netmap todo bsd
 ##--enable-xen-pci-passthrough todo
 ##--with-iconv (libiconv for curses wide char support)
-## libudev?
 ## auth-pam - for auth for vnc&Co using PAM
 ## gio-2.0 - for -display=spice-app
 Build-Depends-Indep:
