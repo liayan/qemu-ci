@@ -359,7 +359,9 @@ Recommends: qemu-system-gui (= ${binary:Version}), qemu-utils,
 :ubuntu: cpu-checker
 Suggests: samba, vde2, qemu-block-extra (= ${binary:Version}),
  sgabios,
-Provides: ${sysprovides:x86}
+Provides: qemu-kvm [linux-amd64 linux-i386], ${sysprovides:x86}
+Conflicts: qemu-kvm [linux-amd64 linux-i386]
+Replaces: qemu-kvm [linux-amd64 linux-i386]
 Description: QEMU full system emulation binaries (x86)
  QEMU is a fast processor emulator: currently the package supports
  i386 and x86-64 emulation. By using dynamic translation it achieves
@@ -480,17 +482,6 @@ Description: Guest-side qemu-system agent
  .
  Install this package on a system which is running as guest inside
  qemu virtual machine.  It is not used on the host.
-
-Package: qemu-kvm
-:debian:Architecture: i386 amd64
-:ubuntu:Architecture: i386 amd64 armhf armel powerpc sparc
-Multi-Arch: foreign
-Pre-Depends: ${misc:Pre-Depends}
-Depends: ${misc:Depends}, qemu-system-x86
-Description: QEMU Full virtualization on x86 hardware
- QEMU is a fast processor emulator.  This package provides just a wrapper
- script /usr/bin/kvm which run qemu-system-x86 in kvm mode for backwards
- compatibility.
 
 :ubuntu:Package: qemu-system-s390x
 :ubuntu:Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel powerpc powerpcspe ppc64 ppc64el riscv64 s390x sparc sparc64

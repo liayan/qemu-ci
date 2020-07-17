@@ -231,6 +231,13 @@ ${sysarch_$1}) \
 	dh_link -pqemu-system-$1 usr/share/doc/qemu-system-common usr/share/doc/qemu-system-$1/common
 
 endef
+# inst-kvm-link package binary-suffix
+define inst-kvm-link
+	dh_link -p $1 usr/bin/qemu-system-$2 usr/bin/kvm
+	mkdir -p debian/$1/usr/share/man/man1
+	sed 's/@ARCH@/$2/g' debian/kvm.1 > debian/$1/usr/share/man/man1/kvm.1
+	touch -r debian/kvm.1 debian/$1/usr/share/man/man1/kvm.1
+endef
 
 binary-arch:
 	dh_testdir
@@ -263,18 +270,31 @@ endif
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 
-# /usr/bin/kvm compat script.  This needs some more work for other arches
-# How about a manpage for it?
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
-	dh_install -pqemu-kvm debian/kvm /usr/bin/
-	dh_install -pqemu-kvm debian/kvm.1 /usr/share/man/man1/
-ifeq ($(VENDOR),UBUNTU)
+# /usr/bin/kvm handy link multi-arch from old qemu-kvm package
+# on i386, should we link to qemu-system-i386? how about x32?
+ifneq ($(filter ${DEB_HOST_ARCH},amd64 i386),)
+	$(call inst-kvm-link,qemu-system-x86,x86_64)
+ifeq (${VENDOR},UBUNTU)
 # on ubuntu *-spice existed, may be used in libvirt xml and scripts - keep links for compatibility
-	dh_link -pqemu-kvm usr/bin/kvm                usr/bin/kvm-spice
-	echo ".so man1/kvm.1" > debian/qemu-system-x86/usr/share/man/man1/kvm-spice.1
-	dh_link -pqemu-kvm usr/bin/qemu-system-x86_64 usr/bin/qemu-system-x86_64-spice
-	echo ".so man1/qemu-system.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-spice.1
+	sed 's/@KVM@/ -enable-kvm/' debian/kvm-spice > debian/qemu-system-x86/usr/bin/kvm-spice
+	sed 's/@KVM@//' debian/kvm-spice > debian/qemu-system-x86/usr/bin/qemu-system-x86_64-spice
+	touch -r debian/kvm-spice debian/qemu-system-x86/usr/bin/kvm-spice debian/qemu-system-x86/usr/bin/qemu-system-x86_64-spice
+	chmod 0755                debian/qemu-system-x86/usr/bin/kvm-spice debian/qemu-system-x86/usr/bin/qemu-system-x86_64-spice
+	dh_install -p qemu-system-x86 debian/kvm-spice.1 usr/share/man/man1/
+	echo ".so man1/kvm-spice.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-spice.1
 endif
+endif
+ifneq ($(filter ${DEB_HOST_ARCH},arm64),)
+	$(call inst-kvm-link,qemu-system-arm,aarch64)
+endif
+ifneq ($(filter ${DEB_HOST_ARCH},armhf armel),)
+	$(call inst-kvm-link,qemu-system-arm,arm)
+endif
+ifneq ($(filter ${DEB_HOST_ARCH},ppc64 ppc64el),)
+	$(call inst-kvm-link,qemu-system-ppc,ppc64)
+endif
+ifneq ($(filter ${DEB_HOST_ARCH},s390x),)
+	$(call inst-kvm-link,qemu-system-$(if ifeq(${VENDOR},UBUNTU),s390x,misc)),s390x)
 endif
 ifeq ($(VENDOR),UBUNTU)
 # apport hook is ubuntu-specific
