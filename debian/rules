@@ -138,11 +138,6 @@ b/configure-stamp: configure
 		$(QEMU_CONFIGURE_OPTIONS) || \
 	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
 
-# switch some simple UI and simple audio modules to be built-ins,
-# but keep more complex to be modules to move to a separate package
-	sed -i -r 's/(CONFIG_(CURSES|-GTK|-SDL|AUDIO_(-PA|OSS|ALSA|-SDL)))=m/\1=y/' \
-		b/qemu/config-host.mak
-
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 	# microvm system
 	rm -rf b/qemu-microvm; mkdir -p b/qemu-microvm
