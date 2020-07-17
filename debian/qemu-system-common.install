@@ -11,4 +11,9 @@ debian/tmp/usr/share/doc/qemu/system usr/share/doc/qemu-system-common
 debian/tmp/usr/bin/ivshmem-server
 debian/tmp/usr/bin/ivshmem-client
 debian/tmp/usr/bin/qemu-storage-daemon
+# common modules
 debian/tmp/usr/lib/*/qemu/ui-curses.so
+debian/tmp/usr/lib/*/qemu/hw-usb-redirect.so
+debian/tmp/usr/lib/*/qemu/hw-usb-smartcard.so
+debian/tmp/usr/lib/*/qemu/hw-display-qxl.so
+debian/tmp/usr/lib/*/qemu/chardev-baum.so
