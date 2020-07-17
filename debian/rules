@@ -294,7 +294,7 @@ ifeq ($(VENDOR),UBUNTU)
 endif
 
 # virtfs-proxy-helper and qemu-bridge-helper are linux-specific
-	for f in usr/bin/virtfs-proxy-helper \
+	for f in usr/lib/qemu/virtfs-proxy-helper \
 	         usr/share/man/man1/virtfs-proxy-helper.1 \
 		 usr/lib/qemu/qemu-bridge-helper \
 	; do \
