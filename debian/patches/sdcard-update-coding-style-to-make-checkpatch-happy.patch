@@ -1,20 +1,27 @@
-From: Philippe Mathieu-Daudé <philmd@redhat.com>
+Commit-Id: 794d68de2f021a6d3874df41d6bbe8590ec05207
+From: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Date: Mon, 13 Jul 2020 09:27:35 +0200
 Subject: hw/sd/sdcard: Update coding style to make checkpatch.pl happy
-Date: Tue, 30 Jun 2020 15:38:56 +0200
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 To make the next commit easier to review, clean this code first.
 
 Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
-Signed-off-by: Philippe Mathieu-Daudé <philmd@redhat.com>
+Signed-off-by: Philippe Mathieu-Daudé <f4bug@amsat.org>
+Reviewed-by: Alistair Francis <alistair.francis@wdc.com>
+Reviewed-by: Alexander Bulekov <alxndr@bu.edu>
+Message-Id: <20200630133912.9428-3-f4bug@amsat.org>
 ---
  hw/sd/sd.c | 24 ++++++++++++++++--------
  1 file changed, 16 insertions(+), 8 deletions(-)
 
 diff --git a/hw/sd/sd.c b/hw/sd/sd.c
-index 97a9d32964..cac8d7d828 100644
+index 76d68359a4..f4f76f8fd2 100644
 --- a/hw/sd/sd.c
 +++ b/hw/sd/sd.c
-@@ -1160,8 +1170,9 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+@@ -1160,8 +1160,9 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
              sd->data_start = addr;
              sd->data_offset = 0;
  
@@ -25,7 +32,7 @@ index 97a9d32964..cac8d7d828 100644
              return sd_r1;
  
          default:
-@@ -1186,8 +1187,9 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+@@ -1191,8 +1192,9 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
              sd->data_start = addr;
              sd->data_offset = 0;
  
@@ -36,7 +43,7 @@ index 97a9d32964..cac8d7d828 100644
              return sd_r1;
  
          default:
-@@ -1232,12 +1234,15 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+@@ -1237,12 +1239,15 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
              sd->data_offset = 0;
              sd->blk_written = 0;
  
@@ -55,7 +62,7 @@ index 97a9d32964..cac8d7d828 100644
              return sd_r1;
  
          default:
-@@ -1256,12 +1261,15 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
+@@ -1261,12 +1266,15 @@ static sd_rsp_type_t sd_normal_command(SDState *sd, SDRequest req)
              sd->data_offset = 0;
              sd->blk_written = 0;
  
@@ -75,6 +82,5 @@ index 97a9d32964..cac8d7d828 100644
  
          default:
 -- 
-2.21.3
-
+2.20.1
 
