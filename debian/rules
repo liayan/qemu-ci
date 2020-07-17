@@ -311,6 +311,17 @@ endif
 	  mv debian/tmp/$$f debian/qemu-system-common/$$f ; \
 	done
 
+ifneq (${DEB_HOST_ARCH},sparc64)
+# virtiofsd needs libseccomp which is not ported to sparc (not even the kernel part),
+# so install it only on non-sparc
+	for f in usr/lib/qemu/virtiofsd \
+		 usr/share/man/man1/virtiofsd.1 \
+		 usr/share/qemu/vhost-user/50-qemu-virtiofsd.json \
+	; do \
+	  dh_install -p qemu-system-common --sourcedir=debian/tmp $$f ; \
+	done
+endif
+
 # ui-spice-app is optional (see d/control for spice)
 	if [ -f debian/tmp${libdir}/qemu/ui-spice-app.so ]; then \
 	  mkdir -p debian/qemu-system-common${libdir}/qemu ; \
