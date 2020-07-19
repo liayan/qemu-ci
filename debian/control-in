@@ -47,8 +47,8 @@ Build-Depends: debhelper (>= 12),
  libncursesw5-dev,
 # --enable-virglrenderer	linux-*
  libvirglrenderer-dev [linux-any],
-# --enable-opengl
- libepoxy-dev, libdrm-dev, libgbm-dev,
+# --enable-opengl	linux-*
+ libepoxy-dev [linux-any], libdrm-dev [linux-any], libgbm-dev [linux-any],
 :debian:# --enable-libnfs
 :debian: libnfs-dev (>> 1.9.3),
 # --enable-numa	i386|amd64|ia64|mips|mipsel|powerpc|powerpcspe|x32|ppc64|ppc64el|arm64|sparc|s390x|riscv64
