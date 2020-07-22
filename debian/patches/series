@@ -38,3 +38,8 @@ sdcard-dont-allow-invalid-SD-card-sizes.patch
 sdcard-update-coding-style-to-make-checkpatch-happy.patch
 sdcard-dont-switch-to-ReceivingData-if-address-is-invalid-CVE-2020-13253.patch
 xgmac-fix-buffer-overflow-in-xgmac_enet_send-CVE-2020-15863.patch
+sm501-convert-printf-abort-to-qemu_log_mask.patch
+sm501-shorten-long-variable-names-in-sm501_2d_operation.patch
+sm501-use-BIT-macro-to-shorten-constant.patch
+sm501-clean-up-local-variables-in-sm501_2d_operation.patch
+sm501-replace-hand-written-implementation-with-pixman-CVE-2020-12829.patch
