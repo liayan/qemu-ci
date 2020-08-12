@@ -147,7 +147,7 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 		--disable-cocoa --disable-lzfse \
 		--disable-guest-agent --disable-guest-agent-msi --disable-tools \
 		--disable-gnutls --disable-gcrypt --disable-auth-pam \
-		--disable-replication --disable-vxhs --disable-bochs --disable-cloop \
+		--disable-replication --disable-bochs --disable-cloop \
 		--disable-dmg --disable-parallels --disable-qed --disable-vdi \
 		--disable-sheepdog --disable-capstone --disable-libpmem --disable-plugins \
 		--disable-snappy --disable-lzo --disable-usb-redir \
