@@ -35,9 +35,8 @@ Build-Depends: debhelper-compat (= 12),
  libcap-ng-dev [linux-any],
 # --enable-curl
  libcurl4-gnutls-dev,
-# libfdt missed some symbols see #931046
 # --enable-fdt
- libfdt-dev (>> 1.5.0-2~),
+ libfdt-dev,
 # --enable-gnutls
  gnutls-dev,
 # --enable-gtk --enable-vte
