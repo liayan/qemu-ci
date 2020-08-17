@@ -317,7 +317,7 @@ endif
 # ui-spice-app is optional (see d/control for spice)
 # hw-display-qxl depends on spice
 	mkdir -p debian/qemu-system-common${libdir}/qemu
-	for f in ui-spice-app.so hw-display-qxl.so; do
+	for f in ui-spice-app.so hw-display-qxl.so; do \
 	  [ -f debian/tmp${libdir}/qemu/$$f ] && \
 	    mv debian/tmp${libdir}/qemu/$$f \
 	       debian/qemu-system-common${libdir}/qemu/ ; \
