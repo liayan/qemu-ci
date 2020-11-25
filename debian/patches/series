@@ -1,7 +1,5 @@
 use-fixed-data-path.patch
 microvm-default-machine-type.patch
-qboot-stop-using-inttypes.patch
-qboot-no-jump-tables.diff
 openbios-address-of-packet-member.patch
 openbios-use-source_date_epoch-in-makefile.patch
 seabios-hppa-use-consistent-date-and-remove-hostname.patch
