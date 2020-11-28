@@ -452,10 +452,11 @@ sysdata-components += sgabios
 ### qboot, aka bios-microvm
 build-qboot: b/qboot/bios.bin
 b/qboot/bios.bin:
-	cp -al roms/qboot b/
-	${MAKE} -C ${CURDIR}/b/qboot
+	rm -rf b/qboot
+	meson setup roms/qboot b/qboot
+	ninja -C b/qboot
 install-qboot: b/qboot/bios.bin
-	install -m 0644 $< ${sysdatadir}/bios-microvm.bin
+	install -m 0644 $< ${sysdatadir}/qboot.rom
 sysdata-components += qboot
 
 ### alpha firmware in roms/palcode-clipper
