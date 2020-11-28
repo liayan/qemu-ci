@@ -199,7 +199,7 @@ endif
 ifeq ($(enable_linux_user),enable)
 	# user-static build
 	# we use this invocation to build just the binaries
-	$(MAKE) -C b/user-static V=${V} $(patsubst %,%-linux-user/all,${user_targets})
+	$(MAKE) -C b/user-static V=${V} $(addprefix qemu-,${user_targets})
 	sed -e 's/qemu\\-user\\-static/qemu\\-user/g' \
 	    -e 's/ (static version)//' \
 	    debian/qemu-user-static.1 > debian/qemu-user.1
