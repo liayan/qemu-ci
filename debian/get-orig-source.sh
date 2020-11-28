@@ -73,6 +73,7 @@ dir roms/QemuMacDrivers
 dir dtc		# system dtc exists and used
 dir capstone	# system capstone exists and used
 dir slirp	# system libslirp exists and used
+dir meson	# meson build system
 
 }
 
