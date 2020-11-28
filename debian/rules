@@ -323,6 +323,11 @@ endif
 	       debian/qemu-system-common${libdir}/qemu/ ; \
 	done
 
+# ui-egl-headless is linux-specific
+	[ -f debian/qemu-system-common${libdir}/qemu/ui-egl-headless.so ] || \
+	    mv debian/tmp${libdir}/qemu/ui-egl-headless.so \
+		debian/qemu-system-common${libdir}/qemu/
+
 endif # linux
 
 endif # enable_system
