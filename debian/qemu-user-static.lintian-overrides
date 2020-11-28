@@ -22,7 +22,6 @@ qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-nios2-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-or1k-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-ppc-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-ppc64-static
-qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-ppc64abi32-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-ppc64le-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-riscv32-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-riscv64-static
@@ -32,7 +31,6 @@ qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-sh4eb-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-sparc-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-sparc32plus-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-sparc64-static
-qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-tilegx-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-x86_64-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-xtensa-static
 qemu-user-static: shared-library-lacks-prerequisites usr/bin/qemu-xtensaeb-static
