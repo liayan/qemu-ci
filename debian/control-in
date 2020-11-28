@@ -485,7 +485,7 @@ Description: Guest-side qemu-system agent
  .
  Install this package on a system which is running as guest inside
  qemu virtual machine.  It is not used on the host.
-
+:ubuntu:
 :ubuntu:Package: qemu-system-s390x
 :ubuntu:Architecture: amd64 arm arm64 armel armhf hppa i386 ia64 kfreebsd-amd64 kfreebsd-i386 mips mipsel powerpc powerpcspe ppc64 ppc64el riscv64 s390x sparc sparc64
 :ubuntu:Multi-Arch: foreign
