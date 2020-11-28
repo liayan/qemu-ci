@@ -426,7 +426,7 @@ sysdata-components += skiboot
 build-x86-optionrom: b/optionrom/built
 b/optionrom/built:
 	mkdir -p b/optionrom
-	${MAKE) -f ${CURDIR}/debian/optionrom.mak -C b/optionrom SRC_PATH="${CURDIR}" all
+	${MAKE} -f ${CURDIR}/debian/optionrom.mak -C b/optionrom SRC_PATH="${CURDIR}" all
 	touch $@
 install-x86-optionrom: build-x86-optionrom b/install-indep-prep.stamp | ${sysdatadir}
 	${MAKE} -f ${CURDIR}/debian/optionrom.mak -C b/optionrom SRC_PATH="${CURDIR}" install DESTDIR="${CURDIR}/${sysdatadir}"
