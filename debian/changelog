@@ -1,3 +1,23 @@
+qemu (1:5.2+dfsg-1) UNRELEASED; urgency=medium
+
+  * new upstream release
+    Closes: #970539, CVE-2020-25084 (21bc31524e8ca487e976f713b878d7338ee00df2)
+    Closes: #970540. CVE-2020-25085 (dfba99f17feb6d4a129da19d38df1bcd8579d1c3)
+    Closes: #970541, CVE-2020-25624 (1328fe0c32d5474604105b8105310e944976b058)
+    Closes: #970542, CVE-2020-25625 (1be90ebecc95b09a2ee5af3f60c412b45a766c4f)
+    Closes: #974687, CVE-2020-25707 (c2cb511634012344e3d0fe49a037a33b12d8a98a)
+    Closes: #975276, CVE-2020-25723
+    Closes: #975265, CVE-2020-27616
+    Closes: #973324, CVE-2020-27617
+    Closes: #972864, CVE-2020-27661
+  * remove obsolete patches
+  * refresh use-fixed-data-path.patch and debian/get-orig-source.sh
+  * update build rules for several components
+  * remove deprecated lm32 and unicore32 system emulators
+  * remove deprecated ppc64abi32 and tilegx linux-user emulators
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 28 Nov 2020 14:58:36 +0300
+
 qemu (1:5.1+dfsg-4) unstable; urgency=high
 
   * mention closing of CVE-2020-16092 by 5.1
