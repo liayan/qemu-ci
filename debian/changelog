@@ -1,6 +1,7 @@
 qemu (1:5.2+dfsg-1) UNRELEASED; urgency=medium
 
   * new upstream release
+    Closes: #965978, CVE-2020-15859 (22dc8663d9fc7baa22100544c600b6285a63c7a3)
     Closes: #970539, CVE-2020-25084 (21bc31524e8ca487e976f713b878d7338ee00df2)
     Closes: #970540, CVE-2020-25085 (dfba99f17feb6d4a129da19d38df1bcd8579d1c3)
     Closes: #970541, CVE-2020-25624 (1328fe0c32d5474604105b8105310e944976b058)
