@@ -1,4 +1,4 @@
-qemu (1:5.2+dfsg-1) UNRELEASED; urgency=medium
+qemu (1:5.2+dfsg-1) unstable; urgency=medium
 
   * new upstream release
     Closes: #965978, CVE-2020-15859 (22dc8663d9fc7baa22100544c600b6285a63c7a3)
@@ -30,8 +30,9 @@ qemu (1:5.2+dfsg-1) UNRELEASED; urgency=medium
   * add spelling.diff patch to fix a few spelling errors
   * update Standards-Version to 4.5.1
   * fix a few trailing whitespaces in d/control and d/changelog
+  * require libcapstone >= 4.0.2 (v4) for build
 
- -- Michael Tokarev <mjt@tls.msk.ru>  Sat, 28 Nov 2020 14:58:36 +0300
+ -- Michael Tokarev <mjt@tls.msk.ru>  Wed, 09 Dec 2020 08:57:41 +0300
 
 qemu (1:5.1+dfsg-4) unstable; urgency=high
 
