@@ -105,19 +105,6 @@ user_targets = \
 
 endif	# enable_linux_user
 
-ifneq ($(filter $(DEB_HOST_ARCH),i386 x32),)
-# XXX as of 2020-04-29 and 2020-07-17, i386 buildd fails to link -static-pie executable:
-# /usr/bin/ld: /usr/lib/i386-linux-gnu/libc.a(memset_chk-nonshared.o):
-#	unsupported non-PIC call to IFUNC `memset'
-# so disable PIE for qemu-user-static build on i386 for now.
-# On x32 -static-pie fails in different way.
-# On amd64 -static-pie appears to work fine.
-# On other architectures qemu correctly detect that -static-pie is not available
-XXXstaticpie = --disable-pie
-else
-XXXstaticpie =
-endif
-
 b/configure-stamp: configure
 	dh_testdir
 
@@ -171,10 +158,13 @@ endif
 ifeq ($(enable_linux_user),enable)
 # do not use debian/configure-opts here, all optional stuff will be enabled
 # automatically, dependencies are already verified in the main build
+# by default this would detect linker option --static-pie, but that
+# breaks some use cases of qemu-static builds (LP: #1908331), therefore
+# add --disable-pie to get "real static" builds.
 	rm -rf b/user-static; mkdir b/user-static
 	cd b/user-static && \
 	    ../../configure ${common_configure_opts} \
-		--static ${XXXstaticpie} --disable-system \
+		--static --disable-pie --disable-system \
 		--target-list="$(addsuffix -linux-user,${user_targets})"
 endif
 	touch $@
