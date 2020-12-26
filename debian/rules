@@ -317,6 +317,10 @@ endif
 	[ -f debian/qemu-system-common${libdir}/qemu/ui-egl-headless.so ] || \
 	    mv debian/tmp${libdir}/qemu/ui-egl-headless.so \
 		debian/qemu-system-common${libdir}/qemu/
+# alsa is linux-specific
+	[ -f debian/qemu-system-common${libdir}/qemu/audio-alsa.so ] || \
+	    mv debian/tmp${libdir}/qemu/audio-alsa.so \
+		debian/qemu-system-common${libdir}/qemu/
 
 endif # linux
 

@@ -11,6 +11,7 @@ debian/tmp/usr/share/man/man7/qemu-cpu-models.7
 debian/tmp/usr/share/doc/qemu/system usr/share/doc/qemu-system-common
 debian/tmp/usr/bin/qemu-storage-daemon
 # common modules
+debian/tmp/usr/lib/*/qemu/audio-alsa.so
 debian/tmp/usr/lib/*/qemu/ui-curses.so
 debian/tmp/usr/lib/*/qemu/ui-opengl.so
 debian/tmp/usr/lib/*/qemu/hw-usb-redirect.so
