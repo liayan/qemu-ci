@@ -304,10 +304,10 @@ ifneq (${DEB_HOST_ARCH},sparc64)
 	done
 endif
 
-# ui-spice-app is optional (see d/control for spice)
+# spice is optional (see d/control)
 # hw-display-qxl depends on spice
 	mkdir -p debian/qemu-system-common${libdir}/qemu
-	for f in ui-spice-core.so ui-spice-app.so hw-display-qxl.so chardev-spice.so; do \
+	for f in ui-spice-core.so ui-spice-app.so hw-display-qxl.so chardev-spice.so audio-spice.so; do \
 	  [ ! -f debian/tmp${libdir}/qemu/$$f ] || \
 	      mv debian/tmp${libdir}/qemu/$$f \
 	       debian/qemu-system-common${libdir}/qemu/ ; \

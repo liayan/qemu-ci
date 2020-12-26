@@ -1,3 +1,5 @@
 usr/lib/*/qemu/ui-gtk.so
-usr/lib/*/qemu/audio-*.so
+usr/lib/*/qemu/audio-alsa.so
+usr/lib/*/qemu/audio-oss.so
+usr/lib/*/qemu/audio-pa.so
 usr/share/locale/*/LC_MESSAGES/qemu.mo
