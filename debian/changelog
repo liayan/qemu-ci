@@ -3,7 +3,7 @@ qemu (1:5.2+dfsg-4) unstable; urgency=medium
   [ Michael Tokarev ]
   * require libfdt >= 1.5.0-2 due to #931046
   * qemu-user: attempt to preserve argv[0] when run under binfmt
-    (Closes: #970460, #959530)
+    (Closes: #970460)
     This changes the enterpreter name for all linux-user registered
     binfmts, so it potentially can break stuff.  The actual binary
     being registered now is /usr/libexec/qemu-binfmt/foo-binfmt-P,
