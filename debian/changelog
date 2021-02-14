@@ -1,3 +1,14 @@
+qemu (1:5.2+dfsg-5) unstable; urgency=medium
+
+  * d/rules: ensure b/ subdir exists before building palcode and qboot
+  * d/changelog: #959530 is not fixed by 5.2+dfsg-4
+  * 3 virtiofsd patches Closes: #980814, CVE-2020-35517
+    virtiofsd: potential privileged host device access from guest
+    - virtiofsd-extract-lo_do_open-from-lo_open.patch
+    - virtiofsd-optionally-return-inode-pointer-from-lo_do_lookup.patch
+    - virtiofsd-prevent-opening-of-special-files-CVE-2020-35517.patch
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 14 Feb 2021 17:44:06 +0300
+
 qemu (1:5.2+dfsg-4) unstable; urgency=medium
 
   [ Michael Tokarev ]
