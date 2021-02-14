@@ -13,3 +13,4 @@ spelling.diff
 memory-clamp-cached-translation-if-points-to-MMIO-region-CVE-2020-27821.patch
 configure-replace-enable-disable-git-update-with-wit.patch
 arm_gic-fix-interrupt-ID-in-GICD_SGIR-CVE-2021-20221.patch
+9pfs-Fully-restart-unreclaim-loop-CVE-2021-20181.patch
