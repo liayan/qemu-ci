@@ -451,7 +451,7 @@ sysdata-components += sgabios
 
 ### qboot, aka bios-microvm
 build-qboot: b/qboot/bios.bin
-b/qboot/bios.bin:
+b/qboot/bios.bin: | b
 	rm -rf b/qboot
 	meson setup roms/qboot b/qboot
 	ninja -C b/qboot
@@ -463,7 +463,7 @@ sysdata-components += qboot
 
 ### alpha firmware in roms/palcode-clipper
 build-palcode-clipper: b/qemu-palcode/palcode-clipper
-b/qemu-palcode/palcode-clipper:
+b/qemu-palcode/palcode-clipper: | b
 	cp -al roms/qemu-palcode b/
 	${MAKE} -C ${CURDIR}/b/qemu-palcode CROSS=${ALPHAEV67_CROSSPFX}
 	${ALPHAEV67_CROSSPFX}strip b/qemu-palcode/palcode-clipper
