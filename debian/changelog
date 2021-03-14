@@ -1,3 +1,9 @@
+qemu (1:5.2+dfsg-8) unstable; urgency=medium
+
+  * a no-change upload to fix broken previous upload
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Sun, 14 Mar 2021 12:21:37 +0300
+
 qemu (1:5.2+dfsg-7) unstable; urgency=high
 
   * do not make qemu-system-common dependent on qemu-system-foo.
