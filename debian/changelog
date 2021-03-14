@@ -11,7 +11,7 @@ qemu (1:5.2+dfsg-7) unstable; urgency=high
     need for it to depend on any of qemu-system-foo of the same version.
     Among other things this fixes #983756 (which should be fixes some
     other way anyway, but it should be ok for now).
-    Closes: #983756, #983921, #985195
+    Closes: #983756, #983921, #985195, #985040
     Urgency is high because a single bin-NMU of qemu package made it
     uninstallable.
 
