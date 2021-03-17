@@ -18,3 +18,5 @@ arm_gic-fix-interrupt-ID-in-GICD_SGIR-CVE-2021-20221.patch
 virtiofsd-extract-lo_do_open-from-lo_open.patch
 virtiofsd-optionally-return-inode-pointer-from-lo_do_lookup.patch
 virtiofsd-prevent-opening-of-special-files-CVE-2020-35517.patch
+virtiofsd-save-error-code-early-at-the-failure-callsite.patch
+virtiofsd-drop-remapped-security.capability-xattr-as-needed-CVE-2021-20263.patch
