@@ -349,7 +349,7 @@ endif	# enable_linux_user
 	dh_install -a
 	dh_missing --list-missing
 	dh_installdocs -a -Nqemu-user-binfmt
-	dh_installchangelogs -a -Nqemu-user-binfmt -XChangelog
+	dh_installchangelogs -a -Nqemu-user-binfmt
 	dh_installdocs -a -pqemu-user-binfmt --link-doc=qemu-user
 	dh_installman -a
 	dh_installudev -a
