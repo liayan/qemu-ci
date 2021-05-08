@@ -46,7 +46,7 @@ Build-Depends: debhelper-compat (= 12),
 # --enable-libiscsi
  libiscsi-dev (>> 1.9.0~),
 # --enable-curses
- libncursesw5-dev,
+ libncurses-dev,
 # --enable-virglrenderer	linux-*
  libvirglrenderer-dev [linux-any],
 # --enable-opengl	linux-*
