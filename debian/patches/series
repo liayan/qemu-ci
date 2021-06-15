@@ -17,3 +17,4 @@ pvrdma-ensure-correct-input-on-ring-init-CVE-2021-3607.patch
 pvrdma-fix-the-ring-init-error-flow-CVE-2021-3608.patch
 usb-limit-combined-packets-to-1-MiB-CVE-2021-3527.patch
 usb-redir-avoid-dynamic-stack-allocation-CVE-2021-3527.patch
+target-s390x-Fix-translation-exception-on-illegal-in.patch
