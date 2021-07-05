@@ -11,6 +11,7 @@ slof-remove-user-and-host-from-release-version.patch
 slof-ensure-ld-is-called-with-C-locale.patch
 spelling.diff
 pc-bios-descriptors-fix-paths-in-json-files.patch
+i386-acpi-restore-device-paths-for-pre-5.1-vms.patch
 memory-clamp-cached-translation-if-points-to-MMIO-region-CVE-2020-27821.patch
 configure-replace-enable-disable-git-update-with-wit.patch
 arm_gic-fix-interrupt-ID-in-GICD_SGIR-CVE-2021-20221.patch
