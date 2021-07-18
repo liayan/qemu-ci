@@ -40,3 +40,4 @@ sdhci/correctly-set-the-controller-status-for-ADMA.patch
 sdhci/limit-block-size-only-when-SDHC_BLKSIZE-register-is-writable.patch
 sdhci/reset-the-data-pointer-of-s-fifo_buffer-when-a-different-block-size-is-programmed.patch
 mptsas-remove-unused-MPTSASState.pending-CVE-2021-3392.patch
+pvrdma-fix-possible-mremap-overflow-in-pvrdma-device-CVE-2021-3582.patch
