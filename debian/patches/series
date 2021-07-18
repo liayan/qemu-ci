@@ -13,3 +13,4 @@ vnc-spelling.patch
 spelling-addtional.patch
 target-ppc-fix-load-endianness-for-lxvwsx-lxvdsx.patch
 pvrdma-fix-possible-mremap-overflow-in-pvrdma-device-CVE-2021-3582.patch
+pvrdma-ensure-correct-input-on-ring-init-CVE-2021-3607.patch
