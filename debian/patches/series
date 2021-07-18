@@ -42,3 +42,4 @@ sdhci/reset-the-data-pointer-of-s-fifo_buffer-when-a-different-block-size-is-pro
 mptsas-remove-unused-MPTSASState.pending-CVE-2021-3392.patch
 pvrdma-fix-possible-mremap-overflow-in-pvrdma-device-CVE-2021-3582.patch
 pvrdma-ensure-correct-input-on-ring-init-CVE-2021-3607.patch
+pvrdma-fix-the-ring-init-error-flow-CVE-2021-3608.patch
