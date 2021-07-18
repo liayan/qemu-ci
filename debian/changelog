@@ -1,6 +1,9 @@
 qemu (1:6.0+dfsg-1~exp0) experimental; urgency=medium
 
   * new upstream release
+    Closes: #979679, CVE-2020-35504
+    Closes: #984455, CVE-2020-35505
+    Closes: #984454, CVE-2020-35506
   * remove obsolete patches, refresh use-fixed-data-path.patch
   * use libncurses-dev, not old libncursesw5-dev
   * enable fuse export (and build-depend on libfuse3-dev)
