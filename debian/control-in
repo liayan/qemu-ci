@@ -39,8 +39,9 @@ Build-Depends: debhelper-compat (= 12),
 # --enable-fdt
 # libfdt #931046
  libfdt-dev (>> 1.5.0-2~),
-# --enable-fuse
- libfuse3-dev,
+# in ubuntu libfuse3 is in universe
+:debian:# --enable-fuse
+:debian: libfuse3-dev,
 # --enable-gnutls
  gnutls-dev,
 # --enable-gtk --enable-vte
