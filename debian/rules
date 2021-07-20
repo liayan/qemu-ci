@@ -126,8 +126,9 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 	# microvm system
 	rm -rf b/qemu-microvm; mkdir -p b/qemu-microvm
 	cd b/qemu-microvm && \
-		../../configure ${common_configure_opts} --disable-user \
-		--enable-system --enable-kvm \
+		../../configure ${common_configure_opts} \
+		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
+		--disable-user --enable-system --enable-kvm \
 		--disable-linux-user --disable-modules --disable-docs \
 		--disable-libssh --disable-tcmalloc --disable-glusterfs \
 		--disable-seccomp --disable-bzip2 --disable-slirp --disable-vde \
@@ -153,7 +154,6 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 		--without-default-devices \
 		$(QEMU_CONFIGURE_OPTIONS) || \
 	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
-	echo "#define CONFIG_MICROVM_DEFAULT 1" >> b/qemu-microvm/x86_64-softmmu/config-target.h
 endif
 
 ifeq ($(enable_linux_user),enable)
