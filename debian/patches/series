@@ -46,3 +46,4 @@ pvrdma-fix-the-ring-init-error-flow-CVE-2021-3608.patch
 ide-atapi-check-logical-block-address-and-read-size-CVE-2020-29443.patch
 usb-limit-combined-packets-to-1-MiB-CVE-2021-3527.patch
 usb-redir-avoid-dynamic-stack-allocation-CVE-2021-3527.patch
+usbredir-fix-free-call-CVE-2021-3682.patch
