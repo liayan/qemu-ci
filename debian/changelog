@@ -1,3 +1,21 @@
+qemu (1:6.0+dfsg-3) unstable; urgency=medium
+
+  [ Michael Tokarev ]
+  * enable /run/qemu mount on ubuntu only
+  * usbredir-fix-free-call-CVE-2021-3682.patchi
+    Closes: #991911, CVE-2021-3682
+
+  [ Christian Ehrhardt ]
+  * ubuntu-only changes:
+   - d/control-in: Make Ubuntu qemu-utils depend on qemu-block-extra
+   - d/control-in: Make Ubuntu qemu-system-common depend on qemu-block-extra
+   - d/control*, d/rules: disable xen by default, but provide universe package
+     qemu-system-x86-xen as alternative
+  * d/p/target-s390x-Fix-translation-exception-on-illegal-in.patch:
+    avoid segfaults by uretprobes (LP 1929926)
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 17 Aug 2021 17:49:10 +0300
+
 qemu (1:6.0+dfsg-2exp) experimental; urgency=medium
 
   [ Christian Ehrhardt ]
