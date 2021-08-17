@@ -1,6 +1,5 @@
 use-fixed-data-path.patch
 microvm-default-machine-type.patch
-build-most-modules-statically-hack.diff
 skip-meson-pc-bios.diff
 linux-user-binfmt-P.diff
 #
