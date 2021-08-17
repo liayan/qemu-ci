@@ -15,7 +15,7 @@ Build-Depends: debhelper-compat (= 12),
  python3:any,
  ninja-build, meson (>> 0.55.3-1~),
 # --enable-docs
- texinfo, python3-sphinx,
+ texinfo, python3-sphinx, python3-sphinx-rtd-theme,
 # iasl (from acpica-tools) is used only in a single test these days, not for building
 # acpica-tools,
 # libcapstone is in universe in ubuntu
