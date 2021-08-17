@@ -11,10 +11,10 @@ There's little reason to build these as modules or to ship them in
 separate packages.
 
 diff --git a/meson.build b/meson.build
-index e3386196ba..a28f7d10f1 100644
+index b3e7ec0e92..ea73f56368 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -1587,13 +1587,19 @@ softmmu_mods = []
+@@ -2321,13 +2321,19 @@ softmmu_mods = []
  foreach d, list : modules
    foreach m, module_ss : list
      if enable_modules and targetos != 'windows'
@@ -28,7 +28,7 @@ index e3386196ba..a28f7d10f1 100644
          block_mods += sl
        else
 -        softmmu_mods += sl
-+        # we only build 2 non-block modules as modules: it is the gui part
++        # we only build some non-block modules as modules: it is the gui part
 +        if d + '-' + m in [ 'ui-gtk', 'ui-sdl', 'audio-pa', 'audio-sdl' ]
 +          softmmu_mods += sl
 +        else
@@ -36,5 +36,5 @@ index e3386196ba..a28f7d10f1 100644
 +          softmmu_ss.add_all(module_ss)
 +        endif
        endif
-     else
-       if d == 'block'
+       if module_ss.sources() != []
+         # FIXME: Should use sl.extract_all_objects(recursive: true) as
