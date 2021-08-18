@@ -609,7 +609,7 @@ binary-indep: b/install-indep-prep.stamp \
 	dh_install -i
 	rm -f debian/qemu-system-data/usr/share/qemu/keymaps/Makefile
 	dh_installdocs -i
-	dh_installchangelogs -i -XChangelog
+	dh_installchangelogs -i
 	dh_lintian -i
 	dh_compress -i
 	dh_fixperms -i
