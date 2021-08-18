@@ -3,3 +3,4 @@ microvm-default-machine-type.patch
 skip-meson-pc-bios.diff
 linux-user-binfmt-P.diff
 #
+spelling.diff
