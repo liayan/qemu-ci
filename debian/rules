@@ -24,6 +24,7 @@ VENDOR := DEBIAN
 XENENABLED := $(if $(filter $(DEB_HOST_ARCH),amd64 i386),--enable-xen,--disable-xen)
 endif
 
+
 # support parallel build using DEB_BUILD_OPTIONS=parallel=N
 ifneq (,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
   MAKEFLAGS += -j$(patsubst parallel=%,%,$(filter parallel=%,$(DEB_BUILD_OPTIONS)))
@@ -280,6 +281,17 @@ ifeq (${enable_system},enable)
 	# qemu-system subpackages
 	mv debian/tmp/usr/share/man/man1/qemu.1 debian/tmp/usr/share/man/man1/qemu-system.1
 	$(foreach s,${systems},$(call inst-system,$s))
+
+# gui modules. We move these here instead of using d/qemu-system-gui.install,
+# b/c we install "all other" modules in qemu-system-common.install
+# audio-pa.so pulls in X11 so we move it into -system-gui too
+	mkdir -p debian/qemu-system-gui${libdir}/qemu
+	mv -t debian/qemu-system-gui${libdir}/qemu/ \
+		debian/tmp${libdir}/qemu/ui-gtk.so \
+		debian/tmp${libdir}/qemu/ui-sdl.so \
+		debian/tmp${libdir}/qemu/audio-sdl.so \
+		debian/tmp${libdir}/qemu/audio-pa.so \
+
 
 ifeq ($(VENDOR),UBUNTU)
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
