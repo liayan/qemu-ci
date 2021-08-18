@@ -543,7 +543,6 @@ Description: Guest-side qemu-system agent
 :ubuntu:Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (= ${binary:Version}), qemu-system-data (>> ${source:Version}~),
 :ubuntu: ipxe-qemu,
 :ubuntu:Recommends:
-:ubuntu: qemu-system-gui (= ${binary:Version}),
 :ubuntu: qemu-utils,
 :ubuntu: seabios,
 :ubuntu:Suggests:
