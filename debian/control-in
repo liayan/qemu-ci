@@ -249,7 +249,7 @@ Depends: ${misc:Depends}, ${shlibs:Depends},
 	|qemu-system-sparc (= ${binary:Version})
 :ubuntu: |qemu-system-s390x (= ${binary:Version})
 	|qemu-system-misc (= ${binary:Version}),
-# XXX why libgl11 - there???
+# libgl1 is dynamically loaded by sdl display code
         libgl1,
 Description: QEMU full system emulation binaries (user interface and audio support)
  This package provides local graphical user interface (currently GTK)
