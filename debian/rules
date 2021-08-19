@@ -289,6 +289,7 @@ ifeq (${enable_system},enable)
 	mv -t debian/qemu-system-gui${libdir}/qemu/ \
 		debian/tmp${libdir}/qemu/ui-gtk.so \
 		debian/tmp${libdir}/qemu/ui-sdl.so \
+		debian/tmp${libdir}/qemu/audio-jack.so \
 		debian/tmp${libdir}/qemu/audio-sdl.so \
 		debian/tmp${libdir}/qemu/audio-pa.so \
 

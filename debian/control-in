@@ -23,7 +23,8 @@ Build-Depends: debhelper-compat (= 12),
 :debian: libcapstone-dev (>> 4.0.2~),
 # --enable-linux-aio	linux-*
  libaio-dev [linux-any],
-# --audio-drv-list=pa,alsa,oss,sdl	linux-*
+ libjack-dev [linux-any],
+# --audio-drv-list=pa,alsa,jack,oss,sdl	linux-*
 # --audio-drv-list=pa,oss	kfreebsd-*
  libpulse-dev,
  libasound2-dev [linux-any],
