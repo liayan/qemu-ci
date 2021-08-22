@@ -2,5 +2,6 @@ use-fixed-data-path.patch
 microvm-default-machine-type.patch
 skip-meson-pc-bios.diff
 linux-user-binfmt-P.diff
+note-missing-module-pkg-name.diff
 #
 spelling.diff
