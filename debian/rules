@@ -285,6 +285,7 @@ ifeq (${enable_system},enable)
 # gui modules. We move these here instead of using d/qemu-system-gui.install,
 # b/c we install "all other" modules in qemu-system-common.install
 # audio-pa.so pulls in X11 so we move it into -system-gui too
+# hw-display-virtio-gpu-gl also pulls in X11, move it to -gui
 	mkdir -p debian/qemu-system-gui${libdir}/qemu
 	mv -t debian/qemu-system-gui${libdir}/qemu/ \
 		debian/tmp${libdir}/qemu/ui-gtk.so \
@@ -292,6 +293,7 @@ ifeq (${enable_system},enable)
 		debian/tmp${libdir}/qemu/audio-jack.so \
 		debian/tmp${libdir}/qemu/audio-sdl.so \
 		debian/tmp${libdir}/qemu/audio-pa.so \
+		debian/tmp${libdir}/qemu/hw-display-virtio-gpu-gl.so \
 
 
 ifeq ($(VENDOR),UBUNTU)
