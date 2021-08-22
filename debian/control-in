@@ -393,7 +393,6 @@ Recommends: qemu-system-gui (= ${binary:Version}), qemu-utils,
  qemu-block-extra (= ${binary:Version}),
 :ubuntu: cpu-checker,
 Suggests: samba, vde2,
- sgabios,
 Provides: qemu-kvm [linux-amd64 linux-i386], ${sysprovides:x86}
 Breaks:   qemu-kvm [linux-amd64 linux-i386]
 Replaces: qemu-kvm [linux-amd64 linux-i386]
