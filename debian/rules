@@ -161,131 +161,7 @@ define inst-kvm-link
 	touch -r debian/kvm.1 debian/$1/usr/share/man/man1/kvm.1
 endef
 
-qemu-builds := qemu
-
-##############################################
-# microvm build:
-b/microvm/config-stamp: configure
-	rm -rf b/microvm; mkdir -p b/microvm
-	cd b/microvm && \
-		../../configure ${common_configure_opts} \
-		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
-		--disable-user --enable-system --enable-kvm \
-		--disable-linux-user --disable-modules --disable-docs \
-		--disable-libssh --disable-tcmalloc --disable-glusterfs \
-		--disable-seccomp --disable-bzip2 --disable-slirp --disable-vde \
-		--disable-netmap --disable-hax --disable-hvf --disable-whpx \
-		--disable-cocoa --disable-lzfse \
-		--disable-guest-agent --disable-guest-agent-msi --disable-tools \
-		--disable-gnutls --disable-gcrypt --disable-auth-pam \
-		--disable-replication --disable-bochs --disable-cloop \
-		--disable-dmg --disable-parallels --disable-qed --disable-vdi \
-		--disable-capstone --disable-libpmem --disable-plugins \
-		--disable-snappy --disable-lzo --disable-usb-redir \
-		--disable-libusb --disable-smartcard --disable-libnfs  \
-		--disable-libiscsi --disable-rbd  --disable-spice --disable-attr \
-		--disable-cap-ng --disable-linux-aio --disable-brlapi \
-		--disable-virglrenderer --disable-vnc-jpeg --disable-vnc-sasl \
-		--disable-vnc-png --disable-rdma --disable-pvrdma \
-		--disable-fdt --disable-curl --disable-curses --disable-sdl \
-		--disable-gtk  --disable-tpm --disable-vte --disable-vnc  \
-		--disable-xen --disable-opengl --target-list=x86_64-softmmu \
-		--audio-drv-list="" --disable-xfsctl --disable-vvfat \
-		--disable-iconv --disable-nettle \
-		--disable-tcg-interpreter --disable-tcg \
-		--disable-libudev --disable-fuse \
-		--without-default-devices \
-		$(QEMU_CONFIGURE_OPTIONS)
-	touch $@
-
-b/microvm/build-stamp: b/microvm/config-stamp
-	$(MAKE) -C b/microvm V=${V}
-	touch $@
-
-# build microvm on amd64 only if system build is enabled
-ifeq ($(filter-out $(DEB_HOST_ARCH),amd64)${enable_system},enable)
-qemu-builds := ${qemu-builds} microvm
-endif
-
-##############################################
-# xen build
-b/xen/config-stamp: configure
-	# system build for qemu-system-x86-xen
-	# like the normal system build, but with:
-	#  --enable-xen
-	#  --disable-linux-user (not needed for this binary)
-	#  reduced --target-list as needed for xen
-	#    xen usually only used on x86, skip other architectures
-	#    (could in theory also enable arm/aarch64)
-	rm -rf b/xen; mkdir -p b/xen
-	cd b/xen && \
-	    ../../configure ${common_configure_opts} --disable-user \
-		--${enable_system}-system \
-		--disable-linux-user \
-		--enable-xen \
-		--target-list="i386-softmmu x86_64-softmmu"
-		--enable-modules \
-		--enable-module-upgrades \
-		$(shell sh debian/extract-config-opts \
-		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
-		$(QEMU_CONFIGURE_OPTIONS)
-	touch $@
-
-b/xen/build-stamp: b/xen/config-stamp
-	$(MAKE) -C b/xen V=${V}
-	touch $@
-
-# build xen version only on ubuntu on amd64 or i386 only if system build is enabled
-ifeq (${VENDOR}-$(filter-out $(DEB_HOST_ARCH),amd64 i386)-${enable_system},UBUNTU--enable)
-qemu-builds := ${qemu-builds} xen
-endif
-
-##############################################
-# linux-user-static build
-b/user-static/config-stamp: configure
-# do not use debian/configure-opts here, all optional stuff will be enabled
-# automatically, dependencies are already verified in the main build
-# by default this would detect linker option --static-pie, but that
-# breaks some use cases of qemu-static builds (LP: #1908331), therefore
-# add --disable-pie to get "real static" builds.
-	rm -rf b/user-static; mkdir b/user-static
-	cd b/user-static && \
-	    ../../configure ${common_configure_opts} \
-		--static --disable-pie --disable-system --disable-xen \
-		--target-list="$(addsuffix -linux-user,${user_targets})"
-	touch $@
-
-b/user-static/build-stamp: b/user-static/config-stamp
-	# we use this invocation to build just the binaries
-	$(MAKE) -C b/user-static V=${V} $(addprefix qemu-,${user_targets})
-	sed -e 's/qemu\\-user\\-static/qemu\\-user/g' \
-	    -e 's/ (static version)//' \
-	    debian/qemu-user-static.1 > debian/qemu-user.1
-	touch $@
-
-ifeq ($(enable_linux_user),enable)
-qemu-builds := ${qemu-builds} user-static
-endif
-
-##############################################
-# common rules
-
-b/config-stamp: $(patsubst %, b/%/config-stamp, ${qemu-builds})
-	touch $@
-
-build-arch: b/build-stamp
-b/build-stamp: $(patsubst %, b/%/build-stamp, ${qemu-builds})
-	touch $@
-
-before-binary-arch:
-	dh_testdir
-	dh_testroot
-	dh_prep -a
-	dh_installdirs -a
-
-binary-arch: | before-binary-arch
-
-	# system and utils install
+b/qemu/install: b/qemu/build-stamp | before-binary-arch
 	$(MAKE) -C b/qemu DESTDIR=$(CURDIR)/debian/tmp install \
 	  KEYMAPS= ICON_SIZES=
 
@@ -316,29 +192,6 @@ ifeq (${enable_system},enable)
 		debian/tmp${libdir}/qemu/audio-sdl.so \
 		debian/tmp${libdir}/qemu/audio-pa.so \
 		debian/tmp${libdir}/qemu/hw-display-virtio-gpu-gl.so \
-
-
-ifeq ($(VENDOR),UBUNTU)
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
-	# xen enabled build as (mutually exclusive and universe-only) alternative
-	mkdir -p debian/qemu-system-x86-xen/usr/bin/
-	mkdir -p debian/qemu-system-x86-xen/usr/share/man/man1/
-	cp b/xen/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86-xen/usr/bin/
-	cp b/xen/i386-softmmu/qemu-system-i386     debian/qemu-system-x86-xen/usr/bin/
-	echo ".so man1/qemu-system.1" > debian/qemu-system-x86-xen/usr/share/man/man1/qemu-system-x86_64.1
-	echo ".so man1/qemu-system.1" > debian/qemu-system-x86-xen/usr/share/man/man1/qemu-system-i386.1
-	dh_link -pqemu-system-x86-xen usr/share/doc/qemu-system-common usr/share/doc/qemu-system-x86-xen/common
-	# compat links to what libxen-dev reports where to find the binaries
-	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-i386 ${XENBINPATH}/qemu-system-i386
-	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-x86_64 ${XENBINPATH}/qemu-system-x86_64
-endif
-endif
-
-ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
-	# microvm system
-	cp b/microvm/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86/usr/bin/qemu-system-x86_64-microvm
-	echo ".so man1/qemu-system.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-microvm.1
-endif
 
 ifeq ($(DEB_HOST_ARCH_OS),linux)
 
@@ -407,17 +260,6 @@ ifeq ($(enable_linux_user),enable)
 	mv -t debian/qemu-user/usr/bin $(patsubst %,debian/tmp/usr/bin/qemu-%,${user_targets})
 	dh_link -p qemu-user $(patsubst %,usr/share/man/man1/qemu-user.1 usr/share/man/man1/qemu-%.1,${user_targets})
 
-	# qemu-user-static
-	mkdir -p debian/qemu-user-static/usr/bin debian/qemu-user-static/usr/share/man/man1
-	for t in ${user_targets}; do \
-	   cp -p b/user-static/$$t-linux-user/qemu-$$t \
-	       debian/qemu-user-static/usr/bin/qemu-$$t-static ; \
-	   ln -s qemu-user-static.1 \
-	       debian/qemu-user-static/usr/share/man/man1/qemu-$$t-static.1 ; \
-	done
-
-	# binfmt support
-	./debian/binfmt-install qemu-user-static
 	./debian/binfmt-install qemu-user-binfmt
 endif	# enable_linux_user
 
@@ -433,6 +275,157 @@ ifeq (${enable_system},enable)
 	install -D debian/qemu-ifup.$(DEB_HOST_ARCH_OS) \
 		debian/qemu-system-common/etc/qemu-ifup
 endif
+
+qemu-builds := qemu
+
+##############################################
+# microvm build:
+b/microvm/config-stamp: configure
+	rm -rf b/microvm; mkdir -p b/microvm
+	cd b/microvm && \
+		../../configure ${common_configure_opts} \
+		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
+		--disable-user --enable-system --enable-kvm \
+		--disable-linux-user --disable-modules --disable-docs \
+		--disable-libssh --disable-tcmalloc --disable-glusterfs \
+		--disable-seccomp --disable-bzip2 --disable-slirp --disable-vde \
+		--disable-netmap --disable-hax --disable-hvf --disable-whpx \
+		--disable-cocoa --disable-lzfse \
+		--disable-guest-agent --disable-guest-agent-msi --disable-tools \
+		--disable-gnutls --disable-gcrypt --disable-auth-pam \
+		--disable-replication --disable-bochs --disable-cloop \
+		--disable-dmg --disable-parallels --disable-qed --disable-vdi \
+		--disable-capstone --disable-libpmem --disable-plugins \
+		--disable-snappy --disable-lzo --disable-usb-redir \
+		--disable-libusb --disable-smartcard --disable-libnfs  \
+		--disable-libiscsi --disable-rbd  --disable-spice --disable-attr \
+		--disable-cap-ng --disable-linux-aio --disable-brlapi \
+		--disable-virglrenderer --disable-vnc-jpeg --disable-vnc-sasl \
+		--disable-vnc-png --disable-rdma --disable-pvrdma \
+		--disable-fdt --disable-curl --disable-curses --disable-sdl \
+		--disable-gtk  --disable-tpm --disable-vte --disable-vnc  \
+		--disable-xen --disable-opengl --target-list=x86_64-softmmu \
+		--audio-drv-list="" --disable-xfsctl --disable-vvfat \
+		--disable-iconv --disable-nettle \
+		--disable-tcg-interpreter --disable-tcg \
+		--disable-libudev --disable-fuse \
+		--without-default-devices \
+		$(QEMU_CONFIGURE_OPTIONS)
+	touch $@
+
+b/microvm/build-stamp: b/microvm/config-stamp
+	$(MAKE) -C b/microvm V=${V}
+	touch $@
+
+b/microvm/install: b/microvm/build-stamp | before-binary-arch
+	cp b/microvm/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86/usr/bin/qemu-system-x86_64-microvm
+	echo ".so man1/qemu-system.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-microvm.1
+
+# build microvm on amd64 only if system build is enabled
+ifeq ($(filter-out $(DEB_HOST_ARCH),amd64)${enable_system},enable)
+qemu-builds := ${qemu-builds} microvm
+endif
+
+##############################################
+# xen build
+b/xen/config-stamp: configure
+	# system build for qemu-system-x86-xen
+	# like the normal system build, but with:
+	#  --enable-xen
+	#  --disable-linux-user (not needed for this binary)
+	#  reduced --target-list as needed for xen
+	#    xen usually only used on x86, skip other architectures
+	#    (could in theory also enable arm/aarch64)
+	rm -rf b/xen; mkdir -p b/xen
+	cd b/xen && \
+	    ../../configure ${common_configure_opts} --disable-user \
+		--${enable_system}-system \
+		--disable-linux-user \
+		--enable-xen \
+		--target-list="i386-softmmu x86_64-softmmu"
+		--enable-modules \
+		--enable-module-upgrades \
+		$(shell sh debian/extract-config-opts \
+		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
+		$(QEMU_CONFIGURE_OPTIONS)
+	touch $@
+
+b/xen/build-stamp: b/xen/config-stamp
+	$(MAKE) -C b/xen V=${V}
+	touch $@
+
+b/xen/install: b/xen/build-stamp | before-binary-arch
+	mkdir -p debian/qemu-system-x86-xen/usr/bin/
+	mkdir -p debian/qemu-system-x86-xen/usr/share/man/man1/
+	cp b/xen/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86-xen/usr/bin/
+	cp b/xen/i386-softmmu/qemu-system-i386     debian/qemu-system-x86-xen/usr/bin/
+	echo ".so man1/qemu-system.1" > debian/qemu-system-x86-xen/usr/share/man/man1/qemu-system-x86_64.1
+	echo ".so man1/qemu-system.1" > debian/qemu-system-x86-xen/usr/share/man/man1/qemu-system-i386.1
+	dh_link -pqemu-system-x86-xen usr/share/doc/qemu-system-common usr/share/doc/qemu-system-x86-xen/common
+	# compat links to what libxen-dev reports where to find the binaries
+	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-i386 ${XENBINPATH}/qemu-system-i386
+	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-x86_64 ${XENBINPATH}/qemu-system-x86_64
+
+# build xen version only on ubuntu on amd64 or i386 only if system build is enabled
+ifeq (${VENDOR}-$(filter-out $(DEB_HOST_ARCH),amd64 i386)-${enable_system},UBUNTU--enable)
+qemu-builds := ${qemu-builds} xen
+endif
+
+##############################################
+# linux-user-static build
+b/user-static/config-stamp: configure
+# do not use debian/configure-opts here, all optional stuff will be enabled
+# automatically, dependencies are already verified in the main build
+# by default this would detect linker option --static-pie, but that
+# breaks some use cases of qemu-static builds (LP: #1908331), therefore
+# add --disable-pie to get "real static" builds.
+	rm -rf b/user-static; mkdir b/user-static
+	cd b/user-static && \
+	    ../../configure ${common_configure_opts} \
+		--static --disable-pie --disable-system --disable-xen \
+		--target-list="$(addsuffix -linux-user,${user_targets})"
+	touch $@
+
+b/user-static/build-stamp: b/user-static/config-stamp
+	# we use this invocation to build just the binaries
+	$(MAKE) -C b/user-static V=${V} $(addprefix qemu-,${user_targets})
+	sed -e 's/qemu\\-user\\-static/qemu\\-user/g' \
+	    -e 's/ (static version)//' \
+	    debian/qemu-user-static.1 > debian/qemu-user.1
+	touch $@
+
+b/user-static/install: b/user-static/build-stamp | before-binary-arch
+	mkdir -p debian/qemu-user-static/usr/bin debian/qemu-user-static/usr/share/man/man1
+	for t in ${user_targets}; do \
+	   cp -p b/user-static/$$t-linux-user/qemu-$$t \
+	       debian/qemu-user-static/usr/bin/qemu-$$t-static ; \
+	   ln -s qemu-user-static.1 \
+	       debian/qemu-user-static/usr/share/man/man1/qemu-$$t-static.1 ; \
+	done
+	./debian/binfmt-install qemu-user-static
+
+ifeq ($(enable_linux_user),enable)
+qemu-builds := ${qemu-builds} user-static
+endif
+
+##############################################
+# common rules
+
+b/config-stamp: $(patsubst %, b/%/config-stamp, ${qemu-builds})
+	touch $@
+
+build-arch: b/build-stamp
+b/build-stamp: $(patsubst %, b/%/build-stamp, ${qemu-builds})
+	touch $@
+
+before-binary-arch:
+	dh_testdir
+	dh_testroot
+	dh_prep -a
+	dh_installdirs -a
+
+binary-arch: $(patsubst %, b/%/install, ${qemu-builds}) | before-binary-arch
+
 	dh_installinit -a -pqemu-guest-agent
 	dh_installsystemd -a -pqemu-guest-agent --no-start --no-enable
 # default-enable /run/qemu mount only on ubuntu,
