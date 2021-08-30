@@ -282,6 +282,7 @@ qemu-builds := qemu
 # microvm build:
 b/microvm/config-stamp: configure
 	rm -rf b/microvm; mkdir -p b/microvm
+	cp -up debian/microvm-devices.mak configs/devices/x86_64-softmmu/microvm.mak
 	cd b/microvm && \
 		../../configure ${common_configure_opts} \
 		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
@@ -310,6 +311,7 @@ b/microvm/config-stamp: configure
 		--disable-tcg-interpreter --disable-tcg \
 		--disable-libudev --disable-fuse \
 		--without-default-devices \
+		--with-devices-x86_64=microvm \
 		$(QEMU_CONFIGURE_OPTIONS)
 	touch $@
 
@@ -634,6 +636,7 @@ clean:	debian/control
 	rm -rf b
 	find scripts/ -name '*.pyc' -delete || :
 	rm -f debian/qemu-user.1
+	rm -f configs/devices/x86_64-softmmu/microvm.mak
 	dh_clean
 
 .PHONY: build clean binary-arch binary-indep binary build-arch build-indep build
