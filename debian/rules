@@ -202,7 +202,8 @@ b/microvm/build-stamp: b/microvm/config-stamp
 	$(MAKE) -C b/microvm V=${V}
 	touch $@
 
-ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
+# build microvm on amd64 only if system build is enabled
+ifeq ($(filter-out $(DEB_HOST_ARCH),amd64)${enable_system},enable)
 qemu-builds := ${qemu-builds} microvm
 endif
 
@@ -234,10 +235,9 @@ b/xen/build-stamp: b/xen/config-stamp
 	$(MAKE) -C b/xen V=${V}
 	touch $@
 
-ifeq ($(VENDOR),UBUNTU)
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
+# build xen version only on ubuntu on amd64 or i386 only if system build is enabled
+ifeq (${VENDOR}-$(filter-out $(DEB_HOST_ARCH),amd64 i386)-${enable_system},UBUNTU--enable)
 qemu-builds := ${qemu-builds} xen
-endif
 endif
 
 ##############################################
@@ -277,11 +277,13 @@ build-arch: b/build-stamp
 b/build-stamp: $(patsubst %, b/%/build-stamp, ${qemu-builds})
 	touch $@
 
-binary-arch:
+before-binary-arch:
 	dh_testdir
 	dh_testroot
 	dh_prep -a
 	dh_installdirs -a
+
+binary-arch: | before-binary-arch
 
 	# system and utils install
 	$(MAKE) -C b/qemu DESTDIR=$(CURDIR)/debian/tmp install \
