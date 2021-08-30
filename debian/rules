@@ -393,24 +393,6 @@ ifneq (${DEB_HOST_ARCH},sparc64)
 	done
 endif
 
-## spice is optional (see d/control)
-## hw-display-qxl depends on spice
-#	mkdir -p debian/qemu-system-common${libdir}/qemu
-#	for f in ui-spice-core.so ui-spice-app.so hw-display-qxl.so chardev-spice.so audio-spice.so; do \
-#	  [ ! -f debian/tmp${libdir}/qemu/$$f ] || \
-#	      mv debian/tmp${libdir}/qemu/$$f \
-#	       debian/qemu-system-common${libdir}/qemu/ ; \
-#	done
-#
-## ui-egl-headless is linux-specific
-#	[ -f debian/qemu-system-common${libdir}/qemu/ui-egl-headless.so ] || \
-#	    mv debian/tmp${libdir}/qemu/ui-egl-headless.so \
-#		debian/qemu-system-common${libdir}/qemu/
-## alsa is linux-specific
-#	[ -f debian/qemu-system-common${libdir}/qemu/audio-alsa.so ] || \
-#	    mv debian/tmp${libdir}/qemu/audio-alsa.so \
-#		debian/qemu-system-common${libdir}/qemu/
-
 # for --enable-module-upgrades to work in more environments
 	install -D -m 0644 debian/run-qemu.mount debian/qemu-block-extra/lib/systemd/system/run-qemu.mount
 
