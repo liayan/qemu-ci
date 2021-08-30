@@ -156,6 +156,7 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 		--audio-drv-list="" --disable-xfsctl --disable-vvfat \
 		--disable-iconv --disable-nettle \
 		--disable-tcg-interpreter --disable-tcg \
+		--disable-libudev --disable-fuse \
 		--without-default-devices \
 		$(QEMU_CONFIGURE_OPTIONS) || \
 	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
