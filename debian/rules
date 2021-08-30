@@ -304,7 +304,7 @@ b/microvm/config-stamp: configure
 		--disable-virglrenderer --disable-vnc-jpeg --disable-vnc-sasl \
 		--disable-vnc-png --disable-rdma --disable-pvrdma \
 		--disable-fdt --disable-curl --disable-curses --disable-sdl \
-		--disable-gtk  --disable-tpm --disable-vte --disable-vnc  \
+		--disable-gtk  --disable-tpm --disable-vte \
 		--disable-xen --disable-opengl --target-list=x86_64-softmmu \
 		--audio-drv-list="" --disable-xfsctl --disable-vvfat \
 		--disable-iconv --disable-nettle \
