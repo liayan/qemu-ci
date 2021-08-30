@@ -136,6 +136,30 @@ ifeq (${enable_system},enable)
 endif
 	touch $@
 
+define inst-system
+	mkdir -p debian/qemu-system-$1/usr/share/man/man1 debian/qemu-system-$1/usr/bin
+	for t in ${sysarch_$1}; do \
+	    mv debian/tmp/usr/bin/qemu-system-$$t debian/qemu-system-$1/usr/bin/qemu-system-$$t; \
+	    echo ".so man1/qemu-system.1" > debian/qemu-system-$1/usr/share/man/man1/qemu-system-$$t.1; \
+	done
+	echo sysarch:$1=\
+$(if $(wordlist 10,20,${sysarch_$1}),\
+$(wordlist 1,8,${sysarch_$1})\$${Newline}   $(wordlist 9,20,${sysarch_$1}),\
+${sysarch_$1}) \
+> debian/qemu-system-$1.substvars
+	echo sysprovides:$1=${addprefix qemu-system-,${filter-out $1,${sysarch_$1}}} | \
+	  sed -e 's/ /, /g' -e 'y/_/-/' >> debian/qemu-system-$1.substvars
+	dh_link -pqemu-system-$1 usr/share/doc/qemu-system-common usr/share/doc/qemu-system-$1/common
+
+endef
+# inst-kvm-link package binary-suffix
+define inst-kvm-link
+	dh_link -p $1 usr/bin/qemu-system-$2 usr/bin/kvm
+	mkdir -p debian/$1/usr/share/man/man1
+	sed 's/@ARCH@/$2/g' debian/kvm.1 > debian/$1/usr/share/man/man1/kvm.1
+	touch -r debian/kvm.1 debian/$1/usr/share/man/man1/kvm.1
+endef
+
 qemu-builds := qemu
 
 # microvm build:
@@ -245,30 +269,6 @@ b/config-stamp: $(patsubst %, b/%/config-stamp, ${qemu-builds})
 build-arch: b/build-stamp
 b/build-stamp: $(patsubst %, b/%/build-stamp, ${qemu-builds})
 	touch $@
-
-define inst-system
-	mkdir -p debian/qemu-system-$1/usr/share/man/man1 debian/qemu-system-$1/usr/bin
-	for t in ${sysarch_$1}; do \
-	    mv debian/tmp/usr/bin/qemu-system-$$t debian/qemu-system-$1/usr/bin/qemu-system-$$t; \
-	    echo ".so man1/qemu-system.1" > debian/qemu-system-$1/usr/share/man/man1/qemu-system-$$t.1; \
-	done
-	echo sysarch:$1=\
-$(if $(wordlist 10,20,${sysarch_$1}),\
-$(wordlist 1,8,${sysarch_$1})\$${Newline}   $(wordlist 9,20,${sysarch_$1}),\
-${sysarch_$1}) \
-> debian/qemu-system-$1.substvars
-	echo sysprovides:$1=${addprefix qemu-system-,${filter-out $1,${sysarch_$1}}} | \
-	  sed -e 's/ /, /g' -e 'y/_/-/' >> debian/qemu-system-$1.substvars
-	dh_link -pqemu-system-$1 usr/share/doc/qemu-system-common usr/share/doc/qemu-system-$1/common
-
-endef
-# inst-kvm-link package binary-suffix
-define inst-kvm-link
-	dh_link -p $1 usr/bin/qemu-system-$2 usr/bin/kvm
-	mkdir -p debian/$1/usr/share/man/man1
-	sed 's/@ARCH@/$2/g' debian/kvm.1 > debian/$1/usr/share/man/man1/kvm.1
-	touch -r debian/kvm.1 debian/$1/usr/share/man/man1/kvm.1
-endef
 
 binary-arch:
 	dh_testdir
