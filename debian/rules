@@ -284,30 +284,41 @@ b/microvm/config-stamp: configure
 	cp -up debian/microvm-devices.mak configs/devices/x86_64-softmmu/microvm.mak
 	cd b/microvm && \
 		../../configure ${common_configure_opts} \
-		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
-		--disable-user --enable-system --enable-kvm \
-		--disable-linux-user --disable-modules --disable-docs \
-		--disable-libssh --disable-glusterfs \
-		--disable-seccomp --disable-bzip2 --disable-slirp --disable-vde \
-		--disable-netmap \
-		--disable-lzfse \
+		--disable-docs \
 		--disable-guest-agent --disable-tools \
-		--disable-gnutls --disable-gcrypt --disable-auth-pam \
+		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
+		--disable-user --disable-linux-user \
+		--enable-system --target-list=x86_64-softmmu --enable-kvm \
+		--disable-modules --disable-plugins \
+		--disable-tcg --disable-xen \
+		\
+		--disable-seccomp --disable-bzip2 \
+		--disable-slirp --disable-vde --disable-netmap \
+		--disable-capstone \
+		--disable-gnutls --disable-gcrypt --disable-nettle \
+		--disable-auth-pam \
+		\
+		--disable-curl --disable-libssh --disable-glusterfs \
+		--disable-libiscsi --disable-libnfs --disable-rbd \
 		--disable-replication --disable-bochs --disable-cloop \
 		--disable-dmg --disable-parallels --disable-qed --disable-vdi \
-		--disable-capstone --disable-libpmem --disable-plugins \
+		--disable-vvfat \
+		\
+		--enable-vnc --disable-vnc-jpeg --disable-vnc-png --disable-vnc-sasl \
+		--disable-curses --disable-sdl --disable-gtk \
+		--disable-spice \
+		--disable-opengl \
+		\
+		--disable-libpmem \
 		--disable-snappy --disable-lzo --disable-usb-redir \
-		--disable-libusb --disable-smartcard --disable-libnfs  \
-		--disable-libiscsi --disable-rbd  --disable-spice \
+		--disable-libusb --disable-smartcard \
 		--disable-cap-ng --disable-linux-aio --disable-brlapi \
-		--disable-virglrenderer --disable-vnc-jpeg --disable-vnc-sasl \
-		--disable-vnc-png --disable-rdma \
-		--disable-fdt --disable-curl --disable-curses --disable-sdl \
-		--disable-gtk --disable-tpm \
-		--disable-xen --disable-opengl --target-list=x86_64-softmmu \
-		--audio-drv-list="" --disable-xfsctl --disable-vvfat \
-		--disable-iconv --disable-nettle \
-		--disable-tcg \
+		--disable-virglrenderer \
+		--disable-rdma \
+		--disable-fdt \
+		--disable-tpm \
+		--audio-drv-list="" --disable-xfsctl \
+		--disable-iconv \
 		--disable-libudev --disable-fuse \
 		--without-default-devices \
 		--with-devices-x86_64=microvm \
