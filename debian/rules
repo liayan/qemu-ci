@@ -112,6 +112,7 @@ endif	# enable_linux_user
 
 # several builds of qemu binary:
 
+##############################################
 # regular, main system/user and tools build
 b/qemu/config-stamp: configure
 	rm -rf b/qemu; mkdir -p b/qemu
@@ -162,6 +163,7 @@ endef
 
 qemu-builds := qemu
 
+##############################################
 # microvm build:
 b/microvm/config-stamp: configure
 	rm -rf b/microvm; mkdir -p b/microvm
@@ -204,6 +206,7 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 qemu-builds := ${qemu-builds} microvm
 endif
 
+##############################################
 # xen build
 b/xen/config-stamp: configure
 	# system build for qemu-system-x86-xen
@@ -237,6 +240,7 @@ qemu-builds := ${qemu-builds} xen
 endif
 endif
 
+##############################################
 # linux-user-static build
 b/user-static/config-stamp: configure
 # do not use debian/configure-opts here, all optional stuff will be enabled
@@ -262,6 +266,9 @@ b/user-static/build-stamp: b/user-static/config-stamp
 ifeq ($(enable_linux_user),enable)
 qemu-builds := ${qemu-builds} user-static
 endif
+
+##############################################
+# common rules
 
 b/config-stamp: $(patsubst %, b/%/config-stamp, ${qemu-builds})
 	touch $@
