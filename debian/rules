@@ -129,8 +129,8 @@ b/configure-stamp: configure
 
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 	# microvm system
-	rm -rf b/qemu-microvm; mkdir -p b/qemu-microvm
-	cd b/qemu-microvm && \
+	rm -rf b/microvm; mkdir -p b/microvm
+	cd b/microvm && \
 		../../configure ${common_configure_opts} \
 		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
 		--disable-user --enable-system --enable-kvm \
@@ -171,8 +171,8 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	#  reduced --target-list as needed for xen
 	#    xen usually only used on x86, skip other architectures
 	#    (could in theory also enable arm/aarch64)
-	rm -rf b/qemu-xen; mkdir -p b/qemu-xen
-	cd b/qemu-xen && \
+	rm -rf b/xen; mkdir -p b/xen
+	cd b/xen && \
 	    ../../configure ${common_configure_opts} --disable-user \
 		--${enable_system}-system \
 		--disable-linux-user \
@@ -215,12 +215,12 @@ endif
 
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 	# microvm system
-	$(MAKE) -C b/qemu-microvm V=${V}
+	$(MAKE) -C b/microvm V=${V}
 endif
 
 ifeq ($(VENDOR),UBUNTU)
 ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
-	$(MAKE) -C b/qemu-xen V=${V}
+	$(MAKE) -C b/xen V=${V}
 endif
 endif
 
@@ -302,8 +302,8 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 	# xen enabled build as (mutually exclusive and universe-only) alternative
 	mkdir -p debian/qemu-system-x86-xen/usr/bin/
 	mkdir -p debian/qemu-system-x86-xen/usr/share/man/man1/
-	cp b/qemu-xen/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86-xen/usr/bin/
-	cp b/qemu-xen/i386-softmmu/qemu-system-i386     debian/qemu-system-x86-xen/usr/bin/
+	cp b/xen/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86-xen/usr/bin/
+	cp b/xen/i386-softmmu/qemu-system-i386     debian/qemu-system-x86-xen/usr/bin/
 	echo ".so man1/qemu-system.1" > debian/qemu-system-x86-xen/usr/share/man/man1/qemu-system-x86_64.1
 	echo ".so man1/qemu-system.1" > debian/qemu-system-x86-xen/usr/share/man/man1/qemu-system-i386.1
 	dh_link -pqemu-system-x86-xen usr/share/doc/qemu-system-common usr/share/doc/qemu-system-x86-xen/common
@@ -315,7 +315,7 @@ endif
 
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 	# microvm system
-	cp b/qemu-microvm/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86/usr/bin/qemu-system-x86_64-microvm
+	cp b/microvm/x86_64-softmmu/qemu-system-x86_64 debian/qemu-system-x86/usr/bin/qemu-system-x86_64-microvm
 	echo ".so man1/qemu-system.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-microvm.1
 endif
 
