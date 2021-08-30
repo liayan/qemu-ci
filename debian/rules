@@ -299,7 +299,7 @@ b/microvm/config-stamp: configure
 		--disable-capstone --disable-libpmem --disable-plugins \
 		--disable-snappy --disable-lzo --disable-usb-redir \
 		--disable-libusb --disable-smartcard --disable-libnfs  \
-		--disable-libiscsi --disable-rbd  --disable-spice --disable-attr \
+		--disable-libiscsi --disable-rbd  --disable-spice \
 		--disable-cap-ng --disable-linux-aio --disable-brlapi \
 		--disable-virglrenderer --disable-vnc-jpeg --disable-vnc-sasl \
 		--disable-vnc-png --disable-rdma --disable-pvrdma \
