@@ -110,10 +110,10 @@ user_targets = \
 
 endif	# enable_linux_user
 
-b/configure-stamp: configure
-	dh_testdir
+# several builds of qemu binary:
 
-	# system build
+# regular, main system/user and tools build
+b/qemu/config-stamp: configure
 	rm -rf b/qemu; mkdir -p b/qemu
 	cd b/qemu && \
 	    ../../configure ${common_configure_opts} --disable-user \
@@ -126,9 +126,12 @@ b/configure-stamp: configure
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
 		$(QEMU_CONFIGURE_OPTIONS) || \
 	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
+	touch $@
 
-ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
-	# microvm system
+qemu-builds := qemu
+
+# microvm build:
+b/microvm/config-stamp: configure
 	rm -rf b/microvm; mkdir -p b/microvm
 	cd b/microvm && \
 		../../configure ${common_configure_opts} \
@@ -160,10 +163,14 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
 		--without-default-devices \
 		$(QEMU_CONFIGURE_OPTIONS) || \
 	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
+	touch $@
+
+ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
+qemu-builds := ${qemu-builds} microvm
 endif
 
-ifeq ($(VENDOR),UBUNTU)
-ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
+# xen build
+b/xen/config-stamp: configure
 	# system build for qemu-system-x86-xen
 	# like the normal system build, but with:
 	#  --enable-xen
@@ -184,10 +191,16 @@ ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
 		$(QEMU_CONFIGURE_OPTIONS) || \
 	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
+	touch $@
+
+ifeq ($(VENDOR),UBUNTU)
+ifneq ($(filter $(DEB_HOST_ARCH),amd64 i386),)
+qemu-builds := ${qemu-builds} xen
 endif
 endif
 
-ifeq ($(enable_linux_user),enable)
+# linux-user-static build
+b/user-static/config-stamp: configure
 # do not use debian/configure-opts here, all optional stuff will be enabled
 # automatically, dependencies are already verified in the main build
 # by default this would detect linker option --static-pie, but that
@@ -198,11 +211,17 @@ ifeq ($(enable_linux_user),enable)
 	    ../../configure ${common_configure_opts} \
 		--static --disable-pie --disable-system --disable-xen \
 		--target-list="$(addsuffix -linux-user,${user_targets})"
+	touch $@
+
+ifeq ($(enable_linux_user),enable)
+qemu-builds := ${qemu-builds} user-static
 endif
+
+b/config-stamp: $(patsubst %, b/%/config-stamp, ${qemu-builds})
 	touch $@
 
 build-arch: b/build-stamp
-b/build-stamp: b/configure-stamp
+b/build-stamp: b/config-stamp
 	dh_testdir
 
 	# system and utils build
