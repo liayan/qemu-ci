@@ -124,8 +124,7 @@ b/qemu/config-stamp: configure
 		--enable-module-upgrades \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
-		$(QEMU_CONFIGURE_OPTIONS) || \
-	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
+		$(QEMU_CONFIGURE_OPTIONS) 
 	touch $@
 
 qemu-builds := qemu
@@ -161,8 +160,7 @@ b/microvm/config-stamp: configure
 		--disable-tcg-interpreter --disable-tcg \
 		--disable-libudev --disable-fuse \
 		--without-default-devices \
-		$(QEMU_CONFIGURE_OPTIONS) || \
-	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
+		$(QEMU_CONFIGURE_OPTIONS)
 	touch $@
 
 ifneq ($(filter $(DEB_HOST_ARCH),amd64),)
@@ -189,8 +187,7 @@ b/xen/config-stamp: configure
 		--enable-module-upgrades \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
-		$(QEMU_CONFIGURE_OPTIONS) || \
-	 { echo ===== CONFIGURE FAILED ===; tail -n 50 config.log; exit 1; }
+		$(QEMU_CONFIGURE_OPTIONS)
 	touch $@
 
 ifeq ($(VENDOR),UBUNTU)
