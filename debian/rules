@@ -287,11 +287,11 @@ b/microvm/config-stamp: configure
 		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
 		--disable-user --enable-system --enable-kvm \
 		--disable-linux-user --disable-modules --disable-docs \
-		--disable-libssh --disable-tcmalloc --disable-glusterfs \
+		--disable-libssh --disable-glusterfs \
 		--disable-seccomp --disable-bzip2 --disable-slirp --disable-vde \
-		--disable-netmap --disable-hax --disable-hvf --disable-whpx \
-		--disable-cocoa --disable-lzfse \
-		--disable-guest-agent --disable-guest-agent-msi --disable-tools \
+		--disable-netmap \
+		--disable-lzfse \
+		--disable-guest-agent --disable-tools \
 		--disable-gnutls --disable-gcrypt --disable-auth-pam \
 		--disable-replication --disable-bochs --disable-cloop \
 		--disable-dmg --disable-parallels --disable-qed --disable-vdi \
@@ -301,13 +301,13 @@ b/microvm/config-stamp: configure
 		--disable-libiscsi --disable-rbd  --disable-spice \
 		--disable-cap-ng --disable-linux-aio --disable-brlapi \
 		--disable-virglrenderer --disable-vnc-jpeg --disable-vnc-sasl \
-		--disable-vnc-png --disable-rdma --disable-pvrdma \
+		--disable-vnc-png --disable-rdma \
 		--disable-fdt --disable-curl --disable-curses --disable-sdl \
-		--disable-gtk  --disable-tpm --disable-vte \
+		--disable-gtk --disable-tpm \
 		--disable-xen --disable-opengl --target-list=x86_64-softmmu \
 		--audio-drv-list="" --disable-xfsctl --disable-vvfat \
 		--disable-iconv --disable-nettle \
-		--disable-tcg-interpreter --disable-tcg \
+		--disable-tcg \
 		--disable-libudev --disable-fuse \
 		--without-default-devices \
 		--with-devices-x86_64=microvm \
