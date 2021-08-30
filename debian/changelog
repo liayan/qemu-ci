@@ -1,3 +1,12 @@
+qemu (1:6.1+dfsg-3) unstable; urgency=medium
+
+  * fix brown-paper bag in last upload (--enable-libudev)
+  * ubuntu only: restore relations (depends/recommends)
+    between qemu-system-gui and qemu-system-xen since -xen
+    replaces full qemu-system-x86 and acts the same way
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Tue, 31 Aug 2021 02:50:52 +0300
+
 qemu (1:6.1+dfsg-2) unstable; urgency=medium
 
   * rearrange d/rules to be able to configure/build/install
