@@ -46,6 +46,7 @@ sysdatadir = debian/qemu-system-data/usr/share/qemu
 
 ALPHAEV67_CROSSPFX = alpha-linux-gnu-
 PPC64_CROSSPFX = powerpc64-linux-gnu-
+RISCV64_CROSSPFX = riscv64-linux-gnu-
 
 # we add another set of configure options from debian/control
 common_configure_opts = \
@@ -578,7 +579,7 @@ sysdata-components += palcode-clipper
 build-slof: b/SLOF/boot_rom.bin
 b/SLOF/boot_rom.bin:
 	cp -al roms/SLOF b/
-	env -u LDFLAGS -u CFLAGS $(MAKE) -C b/SLOF qemu CROSS="powerpc64-linux-gnu-" V=${V}
+	env -u LDFLAGS -u CFLAGS $(MAKE) -C b/SLOF qemu CROSS=${PPC64_CROSSPFX} V=${V}
 install-slof: b/SLOF/boot_rom.bin
 	install -m 0644 $< ${sysdatadir}/slof.bin
 sysdata-components += slof
@@ -608,8 +609,8 @@ sysdata-components += hppa-fw
 build-opensbi: b/opensbi/.built
 b/opensbi/.built: | b
 	mkdir -p b/opensbi
-	${MAKE} -C roms/opensbi O=../../b/opensbi CROSS_COMPILE=riscv64-linux-gnu- V=${V} PLATFORM=generic
-	riscv64-linux-gnu-strip --strip-unneeded -R.comment -R.note b/opensbi/platform/generic/firmware/fw_dynamic.elf
+	${MAKE} -C roms/opensbi O=../../b/opensbi CROSS_COMPILE=${RISCV64_CROSSPFX} V=${V} PLATFORM=generic
+	${RISCV64_CROSSPFX}strip --strip-unneeded -R.comment -R.note b/opensbi/platform/generic/firmware/fw_dynamic.elf
 	touch $@
 install-opensbi: build-opensbi
 	install -m 0644 b/opensbi/platform/generic/firmware/fw_dynamic.bin ${sysdatadir}/opensbi-riscv64-generic-fw_dynamic.bin
