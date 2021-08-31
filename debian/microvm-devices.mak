@@ -1,4 +1,4 @@
-# see configs/devices/i386/default.mak
+# see configs/devices/i386-softmmu/default.mak
 # for additional devices which can be disabled
 #
 CONFIG_PCI_DEVICES=n
@@ -20,3 +20,4 @@ CONFIG_VIRTIO_CRYPTO=y
 CONFIG_VIRTIO_BALLOON=y
 CONFIG_VIRTIO_MEM=y
 CONFIG_VIRTIO_PMEM=y
+CONFIG_VIRTIO_GPU=y
