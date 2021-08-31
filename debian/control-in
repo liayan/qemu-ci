@@ -526,7 +526,7 @@ Description: Guest-side qemu-system agent
 :ubuntu:Multi-Arch: foreign
 :ubuntu:Depends: ${shlibs:Depends}, ${misc:Depends}, qemu-system-common (= ${binary:Version}), qemu-system-data (>> ${source:Version}~),
 :ubuntu:Recommends: qemu-utils,
-:ubuntu:Suggests: qemu-block-extra (= ${binary:Version}),
+:ubuntu: qemu-block-extra (= ${binary:Version}),
 :ubuntu:Provides: qemu-kvm [linux-s390x], ${sysprovides:s390x}
 :ubuntu:Breaks:   qemu-kvm [linux-s390x], qemu-system-misc (<< 1:2.5+dfsg-5ubuntu8~)
 :ubuntu:Replaces: qemu-kvm [linux-s390x], qemu-system-misc (<< 1:2.5+dfsg-5ubuntu8~)
@@ -556,7 +556,6 @@ Description: Guest-side qemu-system agent
 :ubuntu: qemu-utils,
 :ubuntu: seabios,
 :ubuntu:Suggests:
-:ubuntu: qemu-block-extra (= ${binary:Version}),
 :ubuntu: ovmf,
 :ubuntu:Conflicts: qemu-system-x86
 :ubuntu:Description: QEMU full system emulation binaries (x86)
