@@ -329,8 +329,6 @@ b/xen/configured: configure
 	rm -rf b/xen; mkdir -p b/xen
 	cd b/xen && \
 	    ../../configure ${common_configure_opts} --disable-user \
-		--${enable_system}-system \
-		--disable-linux-user \
 		--enable-xen \
 		--target-list="i386-softmmu x86_64-softmmu"
 		--enable-modules \
