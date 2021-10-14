@@ -129,7 +129,7 @@ b/qemu/configured: configure
 		--enable-module-upgrades \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
-		$(QEMU_CONFIGURE_OPTIONS) 
+		${QEMU_CONFIGURE_OPTIONS}
 	touch $@
 
 build-qemu: b/qemu/built
@@ -302,7 +302,7 @@ b/microvm/configured: configure debian/microvm-devices.mak
 		--enable-vhost-scsi --enable-vhost-vsock --enable-vhost-vdpa \
 		--enable-vhost-user --enable-vhost-user-blk-server \
 		--enable-vhost-crypto \
-		$(QEMU_CONFIGURE_OPTIONS)
+		${QEMU_MICROVM_CONFIGURE_OPTIONS}
 	touch $@
 build-microvm: b/microvm/qemu-system-x86_64
 b/microvm/qemu-system-x86_64: b/microvm/configured
@@ -337,7 +337,7 @@ b/xen/configured: configure
 		--enable-module-upgrades \
 		$(shell sh debian/extract-config-opts \
 		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
-		$(QEMU_CONFIGURE_OPTIONS)
+		${QEMU_XEN_CONFIGURE_OPTIONS}
 	touch $@
 build-xen: b/xen/built
 b/xen/built: b/xen/configured
