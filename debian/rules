@@ -286,44 +286,22 @@ b/microvm/configured: configure debian/microvm-devices.mak
 	cp -up debian/microvm-devices.mak configs/devices/x86_64-softmmu/microvm.mak
 	cd b/microvm && \
 		../../configure ${common_configure_opts} \
-		--disable-docs \
-		--disable-guest-agent --disable-tools \
 		--extra-cflags="$(CFLAGS) $(CPPFLAGS) -DCONFIG_MICROVM_DEFAULT=1" \
-		--disable-user --disable-linux-user \
-		--enable-system --target-list=x86_64-softmmu --enable-kvm \
-		--disable-modules --disable-plugins \
-		--disable-tcg --disable-xen \
-		\
-		--disable-seccomp --disable-bzip2 \
-		--disable-slirp --disable-vde --disable-netmap \
-		--disable-capstone \
-		--disable-gnutls --disable-gcrypt --disable-nettle \
-		--disable-auth-pam \
-		\
-		--disable-curl --disable-libssh --disable-glusterfs \
-		--disable-libiscsi --disable-libnfs --disable-rbd \
-		--disable-replication --disable-bochs --disable-cloop \
-		--disable-dmg --disable-parallels --disable-qed --disable-vdi \
-		--disable-vvfat \
-		\
-		--enable-vnc --disable-vnc-jpeg --disable-vnc-png --disable-vnc-sasl \
-		--disable-curses --disable-sdl --disable-gtk \
-		--disable-spice \
-		--disable-opengl \
-		\
-		--disable-libpmem \
-		--disable-snappy --disable-lzo --disable-usb-redir \
-		--disable-libusb --disable-smartcard \
-		--disable-cap-ng --disable-linux-aio --disable-brlapi \
-		--disable-virglrenderer \
-		--disable-rdma \
-		--disable-fdt \
-		--disable-tpm \
-		--audio-drv-list="" --disable-xfsctl \
-		--disable-iconv \
-		--disable-libudev --disable-fuse \
+		--disable-docs \
+		--without-default-features \
+		--disable-user \
+		--target-list=x86_64-softmmu --enable-kvm --disable-tcg \
+		--disable-slirp --disable-capstone --disable-fdt \
+		--enable-vnc \
+		--enable-attr --enable-avx2 \
+		--enable-coroutine-pool \
+		--audio-drv-list="" \
 		--without-default-devices \
 		--with-devices-x86_64=microvm \
+		--enable-vhost-kernel --enable-vhost-net \
+		--enable-vhost-scsi --enable-vhost-vsock --enable-vhost-vdpa \
+		--enable-vhost-user --enable-vhost-user-blk-server \
+		--enable-vhost-crypto \
 		$(QEMU_CONFIGURE_OPTIONS)
 	touch $@
 build-microvm: b/microvm/qemu-system-x86_64
