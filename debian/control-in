@@ -87,6 +87,8 @@ Build-Depends: debhelper-compat (= 12),
  libusbredirparser-dev [linux-any],
 # --enable-libssh
  libssh-dev,
+# --enable-zstd
+ libzstd-dev,
 # vde is debian-only since ubuntu/vde2 is in universe
 :debian:# --enable-vde
 :debian: libvdeplug-dev,
