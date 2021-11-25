@@ -1,5 +1,5 @@
 /*
- *  Copyright (C) 2016-2020 Red Hat, Inc.
+ *  Copyright (C) 2016-2021 Red Hat, Inc.
  *  Copyright (C) 2005  Anthony Liguori <anthony@codemonkey.ws>
  *
  *  Network Block Device Server Side
@@ -879,7 +879,9 @@ static bool nbd_meta_qemu_query(NBDClient *client, NBDExportMetaContexts *meta,
     if (!*query) {
         if (client->opt == NBD_OPT_LIST_META_CONTEXT) {
             meta->allocation_depth = meta->exp->allocation_depth;
-            memset(meta->bitmaps, 1, meta->exp->nr_export_bitmaps);
+            if (meta->exp->nr_export_bitmaps) {
+                memset(meta->bitmaps, 1, meta->exp->nr_export_bitmaps);
+            }
         }
         trace_nbd_negotiate_meta_query_parse("empty");
         return true;
@@ -894,7 +896,8 @@ static bool nbd_meta_qemu_query(NBDClient *client, NBDExportMetaContexts *meta,
     if (nbd_strshift(&query, "dirty-bitmap:")) {
         trace_nbd_negotiate_meta_query_parse("dirty-bitmap:");
         if (!*query) {
-            if (client->opt == NBD_OPT_LIST_META_CONTEXT) {
+            if (client->opt == NBD_OPT_LIST_META_CONTEXT &&
+                meta->exp->nr_export_bitmaps) {
                 memset(meta->bitmaps, 1, meta->exp->nr_export_bitmaps);
             }
             trace_nbd_negotiate_meta_query_parse("empty");
@@ -980,7 +983,7 @@ static int nbd_negotiate_meta_queries(NBDClient *client,
     size_t i;
     size_t count = 0;
 
-    if (!client->structured_reply) {
+    if (client->opt == NBD_OPT_SET_META_CONTEXT && !client->structured_reply) {
         return nbd_opt_invalid(client, errp,
                                "request option '%s' when structured reply "
                                "is not negotiated",
@@ -1024,7 +1027,9 @@ static int nbd_negotiate_meta_queries(NBDClient *client,
         /* enable all known contexts */
         meta->base_allocation = true;
         meta->allocation_depth = meta->exp->allocation_depth;
-        memset(meta->bitmaps, 1, meta->exp->nr_export_bitmaps);
+        if (meta->exp->nr_export_bitmaps) {
+            memset(meta->bitmaps, 1, meta->exp->nr_export_bitmaps);
+        }
     } else {
         for (i = 0; i < nb_queries; ++i) {
             ret = nbd_negotiate_meta_query(client, meta, errp);
