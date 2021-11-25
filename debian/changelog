@@ -1,3 +1,9 @@
+qemu (1:6.2+dfsg-0) UNRELEASED; urgency=medium
+
+  * 6.2.0 upstream (pre)release
+
+ -- Michael Tokarev <mjt@tls.msk.ru>  Thu, 25 Nov 2021 18:22:40 +0300
+
 qemu (1:6.1+dfsg-8) unstable; urgency=medium
 
   * fix keymaps definitions placement in last upload
