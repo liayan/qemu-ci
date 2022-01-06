@@ -291,7 +291,7 @@ b/microvm/configured: configure debian/microvm-devices.mak
 		--without-default-features \
 		--disable-user \
 		--target-list=x86_64-softmmu --enable-kvm --disable-tcg \
-		--disable-slirp --disable-capstone --disable-fdt \
+		--disable-slirp --disable-capstone \
 		--enable-vnc \
 		--enable-attr --enable-avx2 \
 		--enable-coroutine-pool \
