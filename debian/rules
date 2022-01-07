@@ -569,6 +569,8 @@ sysdata-components += s390x-fw
 build-hppa-fw: b/hppafw/hppa-firmware.img
 b/hppafw/hppa-firmware.img:
 	mkdir -p b/hppafw
+	echo CONFIG_PARISC=y > roms/seabios-hppa/.config
+	${MAKE} -C roms/seabios-hppa olddefconfig
 	${MAKE} -C roms/seabios-hppa OUT=../../b/hppafw/ PYTHON=python3 parisc
 	hppa-linux-gnu-strip -R.note -R.comment $@
 install-hppa-fw: b/hppafw/hppa-firmware.img
