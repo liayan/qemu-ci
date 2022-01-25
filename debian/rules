@@ -354,7 +354,7 @@ install-xen: b/xen/built
 	# compat link to what libxen-dev reports where to find the binaries
 	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-i386 ${XENBINPATH}/qemu-system-i386
 # build xen version only on ubuntu on amd64 or i386 only if system build is enabled
-ifeq (${VENDOR}-$(filter-out $(DEB_HOST_ARCH),amd64 i386)-${enable_system},UBUNTU--enable)
+ifeq (${VENDOR}-${DEB_HOST_ARCH}-${enable_system},UBUNTU-amd64-enable)
 qemu-builds += xen
 endif
 
