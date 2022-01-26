@@ -18,7 +18,6 @@ ifeq ($(shell dpkg-vendor --derives-from Ubuntu && echo yes),yes)
 VENDOR := UBUNTU
 DEB_BUILD_PARALLEL = yes
 XENENABLED := --disable-xen
-XENBINPATH := $(shell pkg-config --variable libexec_bin xenlight)
 else
 VENDOR := DEBIAN
 XENENABLED := $(if $(filter $(DEB_HOST_ARCH),amd64 i386),--enable-xen,--disable-xen)
@@ -352,7 +351,7 @@ install-xen: b/xen/built
 	echo ".so man1/qemu-system.1" > debian/qemu-system-x86-xen/usr/share/man/man1/qemu-system-i386.1
 	dh_link -pqemu-system-x86-xen usr/share/doc/qemu-system-common usr/share/doc/qemu-system-x86-xen/common
 	# compat link to what libxen-dev reports where to find the binaries
-	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-i386 ${XENBINPATH}/qemu-system-i386
+	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-i386 /usr/lib/xen/bin/qemu-system-i386
 # build xen version only on ubuntu on amd64 or i386 only if system build is enabled
 ifeq (${VENDOR}-${DEB_HOST_ARCH}-${enable_system},UBUNTU-amd64-enable)
 qemu-builds += xen
