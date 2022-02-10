@@ -201,8 +201,7 @@ ifneq ($(filter ${DEB_HOST_ARCH},amd64 i386),)
 ifeq (${VENDOR},UBUNTU)
 # on ubuntu *-spice existed, may be used in libvirt xml and scripts - keep links for compatibility
 # The sunset for this will be when Ubuntu-Bionic goes out of support which is expected to happen in 2028
-	cp debian/kvm-spice > debian/qemu-system-x86/usr/bin/kvm-spice
-	cp debian/qemu-system-x86_64-spice > debian/qemu-system-x86/usr/bin/qemu-system-x86_64-spice
+	install -p -t debian/qemu-system-x86/usr/bin debian/kvm-spice debian/qemu-system-x86_64-spice
 	install -p -t debian/qemu-system-x86/usr/share/man/man1/ debian/kvm-spice.1
 	echo ".so man1/kvm-spice.1" > debian/qemu-system-x86/usr/share/man/man1/qemu-system-x86_64-spice.1
 endif
