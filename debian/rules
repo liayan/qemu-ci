@@ -352,7 +352,7 @@ install-xen: b/xen/built
 	dh_link -pqemu-system-x86-xen usr/share/doc/qemu-system-common usr/share/doc/qemu-system-x86-xen/common
 	# compat link to what libxen-dev reports where to find the binaries
 	dh_link -pqemu-system-x86-xen /usr/bin/qemu-system-i386 /usr/lib/xen/bin/qemu-system-i386
-# build xen version only on ubuntu on amd64 or i386 only if system build is enabled
+# build xen version only on ubuntu on amd64 if system build is enabled
 ifeq (${VENDOR}-${DEB_HOST_ARCH}-${enable_system},UBUNTU-amd64-enable)
 qemu-builds += xen
 endif
