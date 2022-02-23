@@ -20,7 +20,7 @@ DEB_BUILD_PARALLEL = yes
 XENENABLED := --disable-xen
 else
 VENDOR := DEBIAN
-XENENABLED := $(if $(filter $(DEB_HOST_ARCH),amd64 i386),--enable-xen,--disable-xen)
+XENENABLED := $(if $(filter $(DEB_HOST_ARCH),amd64),--enable-xen,--disable-xen)
 endif
 
 
