@@ -29,6 +29,8 @@ Build-Depends: debhelper-compat (= 12),
  libasound2-dev [linux-any],
 # for virtfs (now in libc6)
 # --enable-attr
+# --enable-bpf	linux-*
+ libbpf-dev	[linux-any],
 # --enable-brlapi
  libbrlapi-dev,
 # --enable-virtfs	linux-*
