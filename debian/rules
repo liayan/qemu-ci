@@ -326,14 +326,13 @@ b/ubuntu-xen/configured: configure
 	rm -rf b/ubuntu-xen; mkdir -p b/ubuntu-xen
 	cd b/ubuntu-xen && \
 	    ../../configure ${common_configure_opts} \
+		$(shell sh debian/extract-config-opts \
+		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
 		--disable-user \
 		--disable-docs \
 		--enable-xen \
 		--target-list="i386-softmmu x86_64-softmmu" \
-		--enable-modules \
-		--enable-module-upgrades \
-		$(shell sh debian/extract-config-opts \
-		    $(DEB_HOST_ARCH_OS)-$(DEB_HOST_ARCH) debian/control) \
+		--enable-modules --enable-module-upgrades \
 		${QEMU_CONFIGURE_OPTIONS}
 	touch $@
 build-ubuntu-xen: b/ubuntu-xen/built
