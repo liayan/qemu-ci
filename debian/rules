@@ -623,12 +623,12 @@ binary-indep: b/install-indep-prep.stamp \
 # dh_install can't rename files so we do things here
 #	dh_install -i
 # qemu-system-data
-	install -Dp ui/icons/qemu.svg \
-	 debian/qemu-system-data/usr/share/icons/hicolor/scalable/apps/qemu.svg
+	install -Dp -m0644 ui/icons/qemu.svg \
+	 -t debian/qemu-system-data/usr/share/icons/hicolor/scalable/apps/
 # icon for sdl2 ui (non-sdl-image version)
-	install -Dp ui/icons/qemu_32x32.png \
-	 debian/qemu-system-data/usr/share/icons/hicolor/32x32/apps/qemu.png
-	install -Dp -t debian/qemu-system-data/usr/share/qemu/keymaps \
+	install -Dp -m0644 ui/icons/qemu_32x32.png \
+	 -t debian/qemu-system-data/usr/share/icons/hicolor/32x32/apps/
+	install -Dp -m0644 -t debian/qemu-system-data/usr/share/qemu/keymaps/ \
 	 $$(ls -1 pc-bios/keymaps/* | fgrep -v /meson.build)
 	dh_installdocs -i
 	dh_installchangelogs -i
